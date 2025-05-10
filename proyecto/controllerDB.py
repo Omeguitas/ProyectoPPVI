@@ -3,23 +3,25 @@ from datetime import datetime
 
 
 
-database = "my_database"
-mysql = MySQL()
-
-def initDB():
+def createDB(mysql: MySQL, nameDB: str):
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute(f"CREATE DATABASE IF NOT EXISTS `{database}`")
+    cursor.execute(f"CREATE DATABASE IF NOT EXISTS {nameDB}")
     conn.commit()
+    conn.close()
+
+def initDB(mysql: MySQL):
+    conn = mysql.connect()
+    cursor = conn.cursor()
     # Creación de la tabla `admin` (administrador)
-    cursor.execute(f"""CREATE TABLE IF NOT EXISTS `{database}`.`admin`(
+    cursor.execute(f"""CREATE TABLE IF NOT EXISTS `admin`(
                    `id` INT(10) PRIMARY KEY AUTO_INCREMENT,
                    `username` VARCHAR(30) UNIQUE,
                    `password` VARCHAR(30),
                    `superUser` BOOLEAN
                    )""")
     # Creación de la tabla `guest` (huésped)
-    cursor.execute(f"""CREATE TABLE IF NOT EXISTS `{database}`.`guest`(
+    cursor.execute(f"""CREATE TABLE IF NOT EXISTS `guest`(
         `id` INT(10) PRIMARY KEY AUTO_INCREMENT,
         `name` VARCHAR(255) NOT NULL,
         `email` VARCHAR(255) UNIQUE NOT NULL,
@@ -27,7 +29,7 @@ def initDB():
     )""")
 
     # Creación de la tabla `unit` (unidad)
-    cursor.execute(f"""CREATE TABLE IF NOT EXISTS `{database}`.`unit`(
+    cursor.execute(f"""CREATE TABLE IF NOT EXISTS `unit`(
         `id` INT(10) PRIMARY KEY AUTO_INCREMENT,
         `rooms` INT(10) NOT NULL,
         `beds` INT(10) NOT NULL,
@@ -36,7 +38,7 @@ def initDB():
     )""")
 
     # Creación de la tabla `reservation` (reserva)
-    cursor.execute(f"""CREATE TABLE IF NOT EXISTS `{database}`.`reservation`(
+    cursor.execute(f"""CREATE TABLE IF NOT EXISTS `reservation`(
         `id` INT(10) PRIMARY KEY AUTO_INCREMENT,
         `unit_id` INT(10) NOT NULL,
         `guest_id` INT(10) NOT NULL,
@@ -50,7 +52,7 @@ def initDB():
     )""")
 
     # Creación de la tabla `survey` (encuesta)
-    cursor.execute(f"""CREATE TABLE IF NOT EXISTS `{database}`.`survey`(
+    cursor.execute(f"""CREATE TABLE IF NOT EXISTS `survey`(
         `id` INT(10) PRIMARY KEY AUTO_INCREMENT,
         `reservation_id` INT(10) NOT NULL,
         `question1` VARCHAR(255),
@@ -68,7 +70,7 @@ def initDB():
         # Creación de la tabla `survey_question` (preguntas encuesta)
 
         # -- Tabla para almacenar las preguntas de la encuesta
-    cursor.execute(f"""CREATE TABLE IF NOT EXISTS `{database}`.`survey_question`(
+    cursor.execute(f"""CREATE TABLE IF NOT EXISTS `survey_question`(
         `id` INT(10) PRIMARY KEY AUTO_INCREMENT,
         `question_text` VARCHAR(255) NOT NULL,
         `question_type` VARCHAR(50) NOT NULL,  -- Tipo de respuesta: 'escala', 'texto', 'opcion multiple', etc.
@@ -77,7 +79,7 @@ def initDB():
     )""")
 
     # -- Tabla para almacenar las respuestas de los huéspedes a las preguntas de la encuesta
-    cursor.execute(f"""CREATE TABLE IF NOT EXISTS `{database}`.`survey_response`(
+    cursor.execute(f"""CREATE TABLE IF NOT EXISTS `survey_response`(
         `id` INT(10) PRIMARY KEY AUTO_INCREMENT,
         `reservation_id` INT(10) NOT NULL,
         `question_id` INT(10) NOT NULL,
@@ -93,7 +95,7 @@ def initDB():
     conn.close()
 
 
-def searchUnits(criteria: dict):
+def searchUnits(criteria: dict, mysql: MySQL):
     conn = mysql.connect()
     cursor = conn.cursor()
     query = """SELECT * FROM unit u WHERE u.id NOT IN
@@ -102,9 +104,9 @@ def searchUnits(criteria: dict):
 
     params = [criteria.pop("start_date"), criteria.pop("end_date")]
 
-    for key, value in criteria:
-        query += f" AND {key} = " + "%s"
-        params.add(value)
+    for key, value in criteria.items():
+        query += f" AND u.{key} = " + "%s"
+        params.append(value)
 
     cursor.execute(query, params)
     units = cursor.fetchall()
@@ -120,7 +122,7 @@ def modifyUnit():
 def deleteUnit():
     pass
 
-def searchAdmin(username: str, password: str):
+def searchAdmin(username: str, password: str, mysql: MySQL):
     conn = mysql.connect()
     cursor = conn.cursor()
     # hashear password?
