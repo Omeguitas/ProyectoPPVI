@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash as hashear, check_password_
 
 
 
+
 class controllerDB:
     def __init__(self, mysql: MySQL):
         self.mysql = mysql
@@ -101,27 +102,51 @@ class controllerDB:
         conn.commit()
         conn.close()
 
-
-    def searchUnits(self, criteria: dict):
+    # TODO hacer que la subconsulta se agregue a la consulta solo si llegan ambas fechas
+    # TODO hacer que si llegan amenities en los criterios, se agreguen cada amenitie con un if in amenities de la base
+    def searchUnits(self, criteria: dict = None):
         conn = self.mysql.connect()
         cursor = conn.cursor()
-        query = """SELECT * FROM unit u WHERE u.id NOT IN
-        (SELECT r.unit_id FROM reservation r WHERE
-            r.check_out_date > %s AND r.check_in_date < %s )"""
+        query = """SELECT * FROM unit u"""
+        if criteria:
+            query += "WHERE"
+            params = []
+            startDate = criteria.pop("start_date", False)
+            endDate = criteria.pop("end_date", False)
+            if (startDate and endDate):
+                query += """u.id NOT IN
+                (SELECT r.unit_id FROM reservation r WHERE
+                r.check_out_date > %s AND r.check_in_date < %s )"""
+                params = [startDate, endDate]
+            
+            amenities = criteria.pop("amenities",False)
+            if amenities:
+                if not(startDate and endDate):
+                    query += "1=1" # Condición que no modifica el resultado, pero simplifica el armado de la query
+                for amenitie in amenities:
+                    query += """AND FIND_IN_SET(%s, amenities)"""
+                    params.append(amenitie)
 
-        params = [criteria.pop("start_date"), criteria.pop("end_date")]
-
-        for key, value in criteria.items():
-            query += f" AND u.{key} = " + "%s"
-            params.append(value)
+            if not(amenities or startDate and endDate):
+                query += "1=1" # Condición que no modifica el resultado, pero simplifica el armado de la query
+            for key, value in criteria.items():
+                query += f" AND u.{key} = " + "%s"
+                params.append(value)
 
         cursor.execute(query, params)
         units = cursor.fetchall()
         conn.close()
         return units
 
-    def createUnit(self):
-        pass
+    def createUnit(self, unit):
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        query = """INSERT INTO unit (rooms, beds, description, price, amenities) VALUES(%s,%s,%s,%s,%s)"""
+        data = unit.rooms, unit.beds, unit.description, unit.price, unit.amenities
+        cursor.execute(query,data)
+        conn.commit()
+        conn.close()
+    
 
     def modifyUnit(self):
         pass
