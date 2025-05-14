@@ -108,13 +108,13 @@ class controllerDB:
         conn = self.mysql.connect()
         cursor = conn.cursor()
         query = """SELECT * FROM unit u"""
+        params = []
         if criteria:
-            query += "WHERE"
-            params = []
+            query += " WHERE"
             startDate = criteria.pop("start_date", False)
             endDate = criteria.pop("end_date", False)
             if (startDate and endDate):
-                query += """u.id NOT IN
+                query += """ u.id NOT IN
                 (SELECT r.unit_id FROM reservation r WHERE
                 r.check_out_date > %s AND r.check_in_date < %s )"""
                 params = [startDate, endDate]
@@ -122,21 +122,29 @@ class controllerDB:
             amenities = criteria.pop("amenities",False)
             if amenities:
                 if not(startDate and endDate):
-                    query += "1=1" # Condición que no modifica el resultado, pero simplifica el armado de la query
+                    query += " 1=1" # Condición que no modifica el resultado, pero simplifica el armado de la query
                 for amenitie in amenities:
-                    query += """AND FIND_IN_SET(%s, amenities)"""
+                    query += """ AND FIND_IN_SET(%s, amenities)"""
                     params.append(amenitie)
 
             if not(amenities or startDate and endDate):
-                query += "1=1" # Condición que no modifica el resultado, pero simplifica el armado de la query
+                query += " 1=1" # Condición que no modifica el resultado, pero simplifica el armado de la query
             for key, value in criteria.items():
                 query += f" AND u.{key} = " + "%s"
                 params.append(value)
-
+        print(query)
         cursor.execute(query, params)
         units = cursor.fetchall()
         conn.close()
-        return units
+        columns_name = [descripcion[0] for descripcion in cursor.description]
+
+        # Construir la lista de diccionarios
+        dicc_list = []
+        for unit in units:
+            # Crear un diccionario para cada fila, usando zip para emparejar nombres y valores
+            unit_dicc = dict(zip(columns_name, unit))
+            dicc_list.append(unit_dicc)
+        return dicc_list
 
     def createUnit(self, unit):
         conn = self.mysql.connect()

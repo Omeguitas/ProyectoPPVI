@@ -88,6 +88,14 @@ def verAdmins():
             admins_dict[admin[1]] = {"id":admin[0], "username": admin[1]}
         return jsonify(admins_dict)
 
+@app.route("/units", methods=["GET", "POST"])
+# @jwt_required()
+def units():
+    if request.method == "GET":
+        return jsonify(DB.searchUnits())
+    elif request.method == "POST":
+        criteria = request.get_json()
+        return jsonify(DB.searchUnits(criteria))
 
 
 if __name__ == "__main__":
