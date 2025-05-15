@@ -1,0 +1,42 @@
+{
+    "route ('/')":{
+        "route": "/",
+        "description": "Devuelve una descripción de lo que devuelve y lo que requiere cada ruta",
+        "user": "Todos",
+        "methods": "get",
+        "requiere": "Nada",
+        "return": "Json con descripcion (este archivo)"
+    },
+    "route ('/login')": {
+        "route":"/login",
+        "description":"Sistema de autenticación de administradores",
+        "user":"Administradores no autenticados",
+        "methods":"post",
+        "requiere":"Json: {'username': str, 'password': str}",
+        "return":"JWT (token) con key_acces y valor de superUser"
+    },
+    "route ('/crearAdmin')": {
+        "route":"/crearAdmin",
+        "description":"Crea un nuevo administrador",
+        "user":"Administrador general (super admin)",
+        "methods":"post",
+        "requiere":"Json: {'username': str, 'password': str, 'superUser'?: bool}",
+        "return":"Json con mensaje sobre exito/fracaso en la operación"
+    },
+    "route ('/ver/admins')": {
+        "route":"/ver/admins",
+        "description":"Devuelve un listado de todos los admins registrados",
+        "user":"Administrador general (super admin)",
+        "methods":"get",
+        "requiere":"Nada",
+        "return":"Json con listado de admins"
+    },
+    "route ('/api/terceros/units')": {
+        "route":"/api/terceros/units",
+        "description":"Devuelve un listado de unidades/unidades disponibles",
+        "user":"Todos",
+        "methods":"get, post",
+        "requiere":"Json{'start_date'?: Date, 'end_date'?: Date, 'rooms'?: int, 'beds'?: int, 'amenities'?: list[str]}?",
+        "return":"Json con lista de unidades según criterios"
+    }
+}

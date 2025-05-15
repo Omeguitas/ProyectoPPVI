@@ -1,4 +1,5 @@
 import os
+import json
 from flask import Flask, request, jsonify
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
@@ -7,6 +8,7 @@ from controllerDB import controllerDB
 from dotenv import load_dotenv
 from datetime import datetime
 from clases.admin import Admin
+
 
 
 load_dotenv()
@@ -29,6 +31,17 @@ DB = controllerDB(db)
 jtw =  JWTManager(app)
 CORS(app, origins=[os.getenv("URL_FRONT")])
 CORS(app, resources={r"/api/terceros/*": {"origins": ["*"]}})
+
+@app.route("/")
+def index():
+    with open('resources/info_routes.json', 'r') as f:
+        data = json.load(f)  # Cargar el JSON del archivo
+    return jsonify(data)
+
+
+    pass
+
+
 
 @app.route("/login", methods = ['POST'])
 def login():
@@ -88,7 +101,7 @@ def verAdmins():
             admins_dict[admin[1]] = {"id":admin[0], "username": admin[1]}
         return jsonify(admins_dict)
 
-@app.route("/units", methods=["GET", "POST"])
+@app.route("/api/terceros/units", methods=["GET", "POST"])
 # @jwt_required()
 def units():
     if request.method == "GET":
