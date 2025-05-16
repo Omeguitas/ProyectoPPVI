@@ -20,10 +20,9 @@ app.secret_key = os.getenv("SECRET_KEY")
 app.config['MYSQL_DATABASE_HOST'] = os.getenv("DB_HOST") # Configuración de host DB
 app.config['MYSQL_DATABASE_USER'] = os.getenv("DB_USER") # Configuración de usuario DB
 app.config['MYSQL_DATABASE_PASSWORD'] = os.getenv("DB_PASSWORD") # Contraseña DB
-app.config['MYSQL_DATABASE_PORT'] = int(os.getenv("DB_PORT")) # Contraseña DB
-app.config['MYSQL_DATABASE_DB']= os.getenv("DB_NAME")
-app.config['JWT_SECRET_KEY']= os.getenv("JWT_SECRET_KEY")
-app.config['FOLDER'] = folder # Indicamos que vamos a guardar esta ruta de la carpeta
+app.config['MYSQL_DATABASE_PORT'] = int(os.getenv("DB_PORT")) # Puerto DB
+app.config['MYSQL_DATABASE_DB']= os.getenv("DB_NAME") # Nombre DB
+app.config['JWT_SECRET_KEY']= os.getenv("JWT_SECRET_KEY") # Clave para JWT
 
 db = MySQL()
 db.init_app(app) # Inicialización de SQL
@@ -37,9 +36,6 @@ def index():
     with open('resources/info_routes.json', 'r') as f:
         data = json.load(f)  # Cargar el JSON del archivo
     return jsonify(data)
-
-
-    pass
 
 
 
@@ -102,7 +98,6 @@ def verAdmins():
         return jsonify(admins_dict)
 
 @app.route("/api/terceros/units", methods=["GET", "POST"])
-# @jwt_required()
 def units():
     if request.method == "GET":
         return jsonify(DB.searchUnits())
