@@ -12,7 +12,7 @@ guest:
 "CREATE TABLE IF NOT EXISTS `guest`(`id` INT(10) PRIMARY KEY AUTO_INCREMENT, `name` VARCHAR(255) NOT NULL, `email` VARCHAR(255) UNIQUE NOT NULL, `phone` VARCHAR(20))"
 
 unit:
-"CREATE TABLE IF NOT EXISTS `unit`(`id` INT(10) PRIMARY KEY AUTO_INCREMENT, `rooms` INT(10) NOT NULL, `beds` INT(10) NOT NULL, `description` TEXT, `price` DECIMAL(10, 2) NOT NULL, `amenities` VARCHAR(2000), `urlsFotos` VARCHAR(2000))"
+"CREATE TABLE IF NOT EXISTS `unit`(`id` INT(10) PRIMARY KEY AUTO_INCREMENT, `rooms` INT(10) NOT NULL, `beds` INT(10) NOT NULL, `description` TEXT, `price` DECIMAL(10, 2) NOT NULL, `amenities` VARCHAR(2000), `urls_fotos` VARCHAR(2000))"
 
 reservation:
 "CREATE TABLE IF NOT EXISTS `reservation`(`id` INT(10) PRIMARY KEY AUTO_INCREMENT, `unit_id` INT(10) NOT NULL, `guest_id` INT(10) NOT NULL, `check_in_date` DATE NOT NULL, `check_out_date` DATE NOT NULL, `price` DECIMAL(10, 2) NOT NULL, `amount_paid` DECIMAL(10, 2) NOT NULL, `checked_in` BOOLEAN NOT NULL DEFAULT FALSE, FOREIGN KEY (`unit_id`) REFERENCES `unit`(`id`), FOREIGN KEY (`guest_id`) REFERENCES `guest`(`id`))"

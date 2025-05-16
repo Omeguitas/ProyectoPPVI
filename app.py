@@ -8,6 +8,7 @@ from controllerDB import controllerDB
 from dotenv import load_dotenv
 from datetime import datetime
 from clases.admin import Admin
+from clases.unit import Unit
 
 
 
@@ -96,6 +97,17 @@ def verAdmins():
         for admin in admins:
             admins_dict[admin[1]] = {"id":admin[0], "username": admin[1]}
         return jsonify(admins_dict)
+
+
+@app.route("/creaUnidad", methods = ['POST'])
+@jwt_required
+def createUnit():
+    data = request.get_json()
+    unit = Unit(data.get("rooms", False), data.get("beds", False), data.get("description", False), data.get("price", False), data.get("amenities", False), data.get("urls_fotos", False), DB)
+    result = unit.save()
+    return jsonify(result)
+
+
 
 @app.route("/api/terceros/units", methods=["GET", "POST"])
 def units():

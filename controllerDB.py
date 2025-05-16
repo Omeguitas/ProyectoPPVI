@@ -55,11 +55,12 @@ class controllerDB:
     def createUnit(self, unit):
         conn = self.mysql.connect()
         cursor = conn.cursor()
-        query = """INSERT INTO unit (rooms, beds, description, price, amenities) VALUES(%s,%s,%s,%s,%s)"""
-        data = unit.rooms, unit.beds, unit.description, unit.price, unit.amenities
+        query = """INSERT INTO unit (rooms, beds, description, price, amenities, urls_fotos) VALUES(%s,%s,%s,%s,%s,%s)"""
+        data = unit.rooms, unit.beds, unit.description, unit.price, unit.amenities, unit.urls_fotos
         cursor.execute(query,data)
         conn.commit()
         conn.close()
+        return '{"msg":"Unidad creada con exito"}'
     
 
     def modifyUnit(self):
