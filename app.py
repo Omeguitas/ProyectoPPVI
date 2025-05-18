@@ -4,12 +4,13 @@ from flask import Flask, request, jsonify
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
 from flaskext.mysql import MySQL
-from controllerDB import controllerDB
+from flask_mail import Mail, Message
+from controllerDB import ControllerDB
 from dotenv import load_dotenv
 from datetime import datetime
 from clases.admin import Admin
 from clases.unit import Unit
-
+from clases import reports
 
 
 load_dotenv()
@@ -25,9 +26,19 @@ app.config['MYSQL_DATABASE_PORT'] = int(os.getenv("DB_PORT")) # Puerto DB
 app.config['MYSQL_DATABASE_DB']= os.getenv("DB_NAME") # Nombre DB
 app.config['JWT_SECRET_KEY']= os.getenv("JWT_SECRET_KEY") # Clave para JWT
 
+app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
+app.config['MAIL_PORT'] = 465  # o 587
+app.config['MAIL_USE_TLS'] = False # Cambiar a True si usas el puerto 587
+app.config['MAIL_USE_SSL'] = True # Usar SSL en el puerto 465
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER')
+
+mail = Mail(app)
+
 db = MySQL()
 db.init_app(app) # Inicialización de SQL
-DB = controllerDB(db)
+DB = ControllerDB(db)
 jtw =  JWTManager(app)
 CORS(app, origins=[os.getenv("URL_FRONT")])
 CORS(app, resources={r"/api/terceros/*": {"origins": ["*"]}})
@@ -116,6 +127,13 @@ def units():
     elif request.method == "POST":
         criteria = request.get_json()
         return jsonify(DB.searchUnits(criteria))
+
+
+@app.route("/informes")
+@jwt_required
+def generateReports():
+    incomeReport = reports(app, mail)
+    occupationReport = ""
 
 
 if __name__ == "__main__":

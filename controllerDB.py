@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash as hashear, check_password_
 
 
 
-class controllerDB:
+class ControllerDB:
     def __init__(self, mysql: MySQL):
         self.mysql = mysql
 
@@ -42,7 +42,7 @@ class controllerDB:
         cursor.execute(query, params)
         units = cursor.fetchall()
         conn.close()
-        columns_name = [descripcion[0] for descripcion in cursor.description]
+        columns_name = [description[0] for description in cursor.description]
 
         # Construir la lista de diccionarios
         dicc_list = []
@@ -109,3 +109,34 @@ class controllerDB:
         cursor.execute("SELECT * FROM admin")
         admins = cursor.fetchall()
         return admins
+    
+    def getIncomeData(self):
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("""SELECT
+            strftime('%Y-%m', start_date) AS mes,
+            SUM(price) AS ingresos
+            FROM reservation
+            GROUP BY mes
+            ORDER BY mes;
+            """)
+        data = cursor.fetchall()
+        conn.close()
+        return data
+    
+    def getReservations(self, since = datetime.min, until=datetime.max):
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM reservation  WHERE check_in_date BETWEEN %s AND %s ORDER BY check_in_date",(since,until))
+        data = cursor.fetchall()
+        conn.close()
+        return data
+    
+    def getTotalUnits(self):
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(id) FROM unit")
+        numberOfUnits = cursor.fetchone()
+        conn.close()
+        return numberOfUnits
+
