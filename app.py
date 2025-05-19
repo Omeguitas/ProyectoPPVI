@@ -132,8 +132,8 @@ def units():
 @app.route("/informes")
 @jwt_required
 def generateReports():
-    incomeReport = reports(app, mail)
-    occupationReport = ""
+    message = reports.sendReports(app, mail,get_jwt_identity().get("username",False))
+    return message
 
 
 if __name__ == "__main__":

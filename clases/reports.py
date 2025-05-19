@@ -4,17 +4,15 @@ from flask_mail import Mail, Message
 # from controllerDB import ControllerDB as DB
 from datetime import date as dt, timedelta as td
 
-def sendReports(app, mail):
-    pass
 
-def sendIncomeReports(app, mail):
+def sendReports(app, mail, recipient):
     bufferIncomeReports = generateIncomeReports()
     bufferoccupationReport = generateoccupationReport()
     
     msg = Message(
         "Informes de ingresos y ocupación",
         sender=app.config['MAIL_DEFAULT_SENDER'],
-        recipients=["recipient@example.com"],  # Cambia esto
+        recipients=[recipient]
     )
     msg.body = "Adjunto encontrarás los informes de ingresos y ocupación."
     msg.html = (
@@ -28,9 +26,9 @@ def sendIncomeReports(app, mail):
     msg.attach("ocupación_mensual.png", "image/png", bufferoccupationReport.read())
     try:
         mail.send(msg)
-        print("Correo electrónico enviado con éxito.")
+        return '{"message":"Correo electrónico enviado con éxito."}'
     except Exception as e:
-        print(f"Error al enviar el correo electrónico: {e}")
+        return '{"message":"Error al enviar el correo electrónico: {e}"}'
 
 def generateIncomeReports(DB):
     incomeData = DB.getIncomeData()
