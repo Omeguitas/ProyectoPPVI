@@ -130,10 +130,14 @@ def units():
 
 
 @app.route("/informes")
-# @jwt_required()
+@jwt_required()
 def generateReports():
-    recipient = "guillermo.fullstack@gmail.com"
+    message = {}
+    recipient = get_jwt_identity().get("username")
+    # recipient = "guillermo.fullstack@gmail.com"
     message = reports.sendReports(app, mail,recipient,DB)
+    # for recipient in ["guillermo.fullstack@gmail.com","carol.ceron801@gmail.com","germangp62@gmail.com","msoledadm88@gmail.com"]:
+    #     message[recipient] = reports.sendReports(app, mail,recipient,DB)
     return message
 
 
