@@ -81,6 +81,7 @@ class ControllerDB:
     def autenticateAdmin(self, admin):
         result = self.searchAdmin(admin)
         if result and check_password_hash(result[1],admin.password):
+            admin.authenticated = True
             admin.superUser = result[0]
             return True
         return False

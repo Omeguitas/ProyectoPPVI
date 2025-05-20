@@ -14,10 +14,8 @@ class Admin:
         
     
     def authenticate(self):
-        result = self.DB.searchAdmin(self)
-        if type(result) == tuple:
-            self.superUser = result[0]
-            self.authenticated = True
+        self.DB.autenticateAdmin(self)
+        
             
 
     def addUnity(self,unity):
