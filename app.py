@@ -111,7 +111,7 @@ def verAdmins():
 
 
 @app.route("/creaUnidad", methods = ['POST'])
-@jwt_required
+@jwt_required()
 def createUnit():
     data = request.get_json()
     unit = Unit(data.get("rooms", False), data.get("beds", False), data.get("description", False), data.get("price", False), data.get("amenities", False), data.get("urls_fotos", False), DB)
@@ -130,9 +130,10 @@ def units():
 
 
 @app.route("/informes")
-@jwt_required
+# @jwt_required()
 def generateReports():
-    message = reports.sendReports(app, mail,get_jwt_identity().get("username",False))
+    recipient = "guillermo.fullstack@gmail.com"
+    message = reports.sendReports(app, mail,recipient,DB)
     return message
 
 

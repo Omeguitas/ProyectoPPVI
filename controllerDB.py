@@ -113,8 +113,8 @@ class ControllerDB:
     def getIncomeData(self):
         conn = self.mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("""SELECT
-            strftime('%Y-%m', start_date) AS mes,
+        cursor.execute("""SELECT 
+            DATE_FORMAT(check_in_date, '%Y-%m') AS mes,
             SUM(price) AS ingresos
             FROM reservation
             GROUP BY mes
