@@ -31,6 +31,14 @@
         "requiere":"Nada",
         "return":"Json con listado de admins"
     },
+    "route ('/crearUnidad')": {
+        "route":"/crearUnidad",
+        "description":"Crea una nueva unidad en DB",
+        "user":"Administrador logueado",
+        "methods":"post",
+        "requiere":"Json:{'rooms': int, 'beds': int, 'description'? : str, 'price': float, 'amenities'? ; list[str], 'urls_fotos'? : list[str]",
+        "return":"Json con mensaje sobre exito/fracaso en la operación"
+    },
     "route ('/api/terceros/units')": {
         "route":"/api/terceros/units",
         "description":"Devuelve un listado de unidades/unidades disponibles",
@@ -38,5 +46,14 @@
         "methods":"get, post",
         "requiere":"Json{'start_date'?: Date, 'end_date'?: Date, 'rooms'?: int, 'beds'?: int, 'amenities'?: list[str]}?",
         "return":"Json con lista de unidades según criterios"
-    }
+    },
+    "route ('/informes')": {
+        "route":"/informes",
+        "description":"Genera y envia por mail informes(ingresos y ocupaión) al administrador que lo pida.",
+        "user":"Administradoer registrado",
+        "methods":"get",
+        "requiere":"Nada",
+        "return":"Json con mensaje sobre exito/fracaso en la operación + mail con informes al usuario"
+    },
+    
 }

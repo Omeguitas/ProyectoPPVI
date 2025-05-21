@@ -81,7 +81,7 @@ def login():
 
 @app.route("/crearAdmin", methods =['POST'])
 @jwt_required()
-def crearSuperadmin():
+def crearAdmin():
     userIdentity = get_jwt_identity()
     if userIdentity.get("superUser",False):
         data = request.get_json()
