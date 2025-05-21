@@ -39,6 +39,14 @@
         "requiere":"Json:{'rooms': int, 'beds': int, 'description'? : str, 'price': float, 'amenities'? ; list[str], 'urls_fotos'? : list[str]",
         "return":"Json con mensaje sobre exito/fracaso en la operación"
     },
+    "route ('/eliminarUnidad')": {
+        "route":"/eliminarUnidad",
+        "description":"Borra de DB la unidad con el id pasado po parametro",
+        "user":"Administrador logueado",
+        "methods":"post",
+        "requiere":"Json: {'id' : int}",
+        "return":"Json con mensaje sobre exito/fracaso en la operación"
+    },
     "route ('/api/terceros/units')": {
         "route":"/api/terceros/units",
         "description":"Devuelve un listado de unidades/unidades disponibles",

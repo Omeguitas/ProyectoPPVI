@@ -65,9 +65,21 @@ class ControllerDB:
 
     def modifyUnit(self):
         pass
-
-    def deleteUnit(self):
-        pass
+    
+    def deleteUnit(self, id):
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        query = """DELETE FROM unit WHERE id LIKE %s"""
+        cursor.execute(query,id)
+        conn.commit()
+        message = ""
+        if cursor.rowcount:
+            message = "{'message':'Unidad eliminada con exito'}"
+        else:
+            message = "{'message':'Unidad no encontrada'}"
+        cursor.close()
+        conn.close()
+        return message
 
     def searchAdmin(self, admin):
         conn = self.mysql.connect()

@@ -119,6 +119,14 @@ def createUnit():
     return jsonify(result)
 
 
+@app.route("/eliminarUnidad", methods = ['POST'])
+@jwt_required()
+def deleteUnit():
+    id = request.get_json().get("id",None)
+    message = "{'message' : 'Parametro id no encontrado'}"
+    if id:
+        message = DB.deleteUnit(id)
+    return message
 
 @app.route("/api/terceros/units", methods=["GET", "POST"])
 def units():
