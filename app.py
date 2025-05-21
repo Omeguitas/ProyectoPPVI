@@ -118,6 +118,14 @@ def createUnit():
     result = unit.save()
     return jsonify(result)
 
+@app.route("/editarUnidad", methods = ['POST'])
+@jwt_required()
+def editUnit():
+    data = request.get_json()
+    unit = Unit(data.get("rooms", False), data.get("beds", False), data.get("description", False), data.get("price", False), data.get("amenities", False), data.get("urls_fotos", False), DB, data.get("id"))
+    result = unit.edit()
+    return jsonify(result)
+
 
 @app.route("/eliminarUnidad", methods = ['POST'])
 @jwt_required()

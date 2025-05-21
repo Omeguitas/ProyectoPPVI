@@ -63,8 +63,29 @@ class ControllerDB:
         return '{"msg":"Unidad creada con exito"}'
     
 
-    def modifyUnit(self):
-        pass
+    def modifyUnit(self, unit):
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        query = """UPDATE unit SET
+        rooms = %s,
+        beds = %s,
+        description = %s,
+        price = %s,
+        amenities = %s,
+        urls_fotos = %s
+        WHERE id LIKE %s"""
+        data = (unit.rooms, unit.beds, unit.description, unit.price, unit.amenities, unit.urls_fotos, unit.id)
+        cursor.execute(query,data)
+        conn.commit()
+        message = ""
+        if cursor.rowcount:
+            message = "{'message':'Unidad modificada con exito'}"
+        else:
+            message = "{'message':'Unidad no encontrada'}"
+        cursor.close()
+        conn.close()
+        return message
+        
     
     def deleteUnit(self, id):
         conn = self.mysql.connect()
