@@ -174,3 +174,26 @@ class ControllerDB:
         conn.close()
         return numberOfUnits
 
+    def searchIdGuestByMail(self, guest):
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT id FROM guest WHERE email = %s", guest.email)
+        idGuest = cursor.fetchone()
+        conn.close()
+        return idGuest
+    
+    def saveGuest(self, guest):
+        id = None
+        result = self.searchIdGuestByMail()
+        if result.len()>0:
+            id = result[0]
+        else:
+            conn = self.mysql.connect()
+            cursor = conn.cursor()
+            query = """INSERT INTO guest (name, email, phone)"""
+            data = (guest.name, guest.email, guest.phone)
+            cursor.execute(query, data)
+            conn.commit()
+            id = cursor.lastrowid()
+            conn.close()
+        return id
