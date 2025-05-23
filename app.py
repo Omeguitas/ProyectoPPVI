@@ -7,11 +7,12 @@ from flaskext.mysql import MySQL
 from flask_mail import Mail, Message
 from controllerDB import ControllerDB
 from dotenv import load_dotenv
-from datetime import datetime
+from datetime import datetime as dt
 from clases.admin import Admin
 from clases.unit import Unit
 from clases import reports
 from clases.guest import Guest
+from clases.reservation import Reservation
 
 
 load_dotenv()
@@ -163,8 +164,9 @@ def saveReservation():
     data = request.get_json()
     dataGuest = data.get("guest")
     guest = Guest(dataGuest.name, dataGuest.mail,dataGuest.phone,DB)
-    
-    pass
+    guestId = guest.save()
+    reservation = Reservation(data.get("unit_id"), guestId, dt.date(data.get("check_in_date")), dt.date(data.get("check_out_date")), data.get("price"), data.get("amount_paid"), DB)
+    reservation.save()   
 
 
 if __name__ == "__main__":

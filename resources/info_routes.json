@@ -70,6 +70,14 @@
         "methods":"get",
         "requiere":"Nada",
         "return":"Json con mensaje sobre exito/fracaso en la operación + mail con informes al usuario"
+    },
+    "route ('/api/terceros/almacenaReserva')": {
+        "route":"/api/terceros/almacenaReserva",
+        "description":"Almacena una reserva y si el huesped no esta regitrado, lo almacena",
+        "user":"Todos",
+        "methods":"post",
+        "requiere":"Json: {'unit_id' : int, 'check_in_date': date, 'check_out_date','price': float, 'amount_paid': float, 'guest':{'name':str, 'mail':str, 'phone':str}}",
+        "return":"Nada por el momento"
     }
     
 }
