@@ -73,7 +73,7 @@ def login():
     admin.authenticate()
     if admin.authenticated:
         #  Incluye información del usuario que necesites en la identidad del token
-        userIdentity = {"superUser": admin.superUser, "username": admin.username}
+        userIdentity = f'{"superUser": {admin.superUser}, "username": "{admin.username}"}'
         accessToken = create_access_token(identity=userIdentity)  # Crea el token
         return jsonify(access_token=accessToken), 200  # Devuelve el token en la respuesta
     else:
@@ -84,7 +84,7 @@ def login():
 @app.route("/crearAdmin", methods =['POST'])
 @jwt_required()
 def crearAdmin():
-    userIdentity = get_jwt_identity()
+    userIdentity = json.loads(get_jwt_identity())
     if userIdentity.get("superUser",False):
         data = request.get_json()
         if not data:
@@ -103,7 +103,7 @@ def crearAdmin():
 @app.route("/verAdmins")
 @jwt_required()
 def verAdmins():
-    userIdentity = get_jwt_identity()
+    userIdentity = json.loads(get_jwt_identity())
     if userIdentity.get("superUser",False):
         admins = DB.auxVerAdmins()
         admins_dict = {}
@@ -151,7 +151,7 @@ def units():
 @jwt_required()
 def generateReports():
     message = {}
-    recipient = get_jwt_identity().get("username")
+    recipient = json.loads(get_jwt_identity()).get("username")
     # recipient = "guillermo.fullstack@gmail.com"
     message = reports.sendReports(app, mail,recipient,DB)
     # for recipient in ["guillermo.fullstack@gmail.com","carol.ceron801@gmail.com","germangp62@gmail.com","msoledadm88@gmail.com"]:
