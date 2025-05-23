@@ -73,7 +73,7 @@ def login():
     admin.authenticate()
     if admin.authenticated:
         #  Incluye información del usuario que necesites en la identidad del token
-        userIdentity = f'{"superUser": {admin.superUser}, "username": "{admin.username}"}'
+        userIdentity = f'{{"superUser": {json.dumps(admin.superUser)}, "username": {json.dumps(admin.username)}}}'
         accessToken = create_access_token(identity=userIdentity)  # Crea el token
         return jsonify(access_token=accessToken), 200  # Devuelve el token en la respuesta
     else:
