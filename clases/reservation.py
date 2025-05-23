@@ -12,5 +12,5 @@ class Reservation:
         self.DB = DB
 
     def save(self):
-        
+        self.DB.createReservation(self)
         pass

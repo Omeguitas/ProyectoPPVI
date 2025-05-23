@@ -197,3 +197,12 @@ class ControllerDB:
             id = cursor.lastrowid()
             conn.close()
         return id
+    
+    def createReservation(self, reservation):
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        query = """INSERT INTO reservation (unit_id, guest_id, check_in_date, check_out_date, price, amount_paid) VALUES(%s,%s,%s,%s,%s,%s)"""
+        data = (reservation.unit_id, reservation.guest_id, reservation.check_in_date, reservation.check_out_date, reservation.price, reservation.amount_paid)
+        cursor.execute(query,data)
+        conn.commit()
+        conn.close()

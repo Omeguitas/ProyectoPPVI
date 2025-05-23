@@ -11,6 +11,7 @@ from datetime import datetime
 from clases.admin import Admin
 from clases.unit import Unit
 from clases import reports
+from clases.guest import Guest
 
 
 load_dotenv()
@@ -155,6 +156,15 @@ def generateReports():
     # for recipient in ["guillermo.fullstack@gmail.com","carol.ceron801@gmail.com","germangp62@gmail.com","msoledadm88@gmail.com"]:
     #     message[recipient] = reports.sendReports(app, mail,recipient,DB)
     return message
+
+
+@app.route("/api/terceros/almacenaReserva", methods = ['POST'])
+def saveReservation():
+    data = request.get_json()
+    dataGuest = data.get("guest")
+    guest = Guest(dataGuest.name, dataGuest.mail,dataGuest.phone,DB)
+    
+    pass
 
 
 if __name__ == "__main__":
