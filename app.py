@@ -139,9 +139,12 @@ def deleteUnit():
         message = DB.deleteUnit(id)
     return message
 
-@app.route("/api/terceros/units", methods=["GET", "POST"])
+@app.route("/api/terceros/units/", methods=["GET", "POST"])
 def units():
+    id = request.args.get('id')
     if request.method == "GET":
+        if id:
+            return jsonify(DB.searchUnits({"id":id}))
         return jsonify(DB.searchUnits())
     elif request.method == "POST":
         criteria = request.get_json()
