@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "Pruebas de api/BDD",
     "collectionId": "ad89ea21-6d5e-416d-8f63-e7dc90024416",
-    "dateExported": "2025-05-25T00:08:38.137Z",
+    "dateExported": "2025-05-25T11:40:14.336Z",
     "version": "1.2",
     "folders": [],
     "requests": [
@@ -15,7 +15,7 @@
             "method": "POST",
             "sortNum": 20000,
             "created": "2025-05-24T23:51:12.268Z",
-            "modified": "2025-05-25T00:04:55.572Z",
+            "modified": "2025-05-25T11:38:20.231Z",
             "headers": [],
             "body": {
                 "type": "json",
@@ -32,8 +32,12 @@
             "method": "POST",
             "sortNum": 30000,
             "created": "2025-05-24T23:48:19.319Z",
-            "modified": "2025-05-25T00:07:23.796Z",
+            "modified": "2025-05-25T11:38:15.840Z",
             "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                },
                 {
                     "name": "Authorization",
                     "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODEzMTA3MywianRpIjoiNmZjZDI1NGUtMjcwZS00YTVkLThjZDktNGM5NzJlNjBkOTlhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiYWRtaW4zXCJ9IiwibmJmIjoxNzQ4MTMxMDczLCJjc3JmIjoiYzgyY2NiYjUtYTBkYy00YzFhLWI2ZTMtZmU3NzcxYjgwMzE4IiwiZXhwIjoxNzQ4MjE3NDczfQ.rJfexgFNc0cdmes1tMw5CFiwq2j_1fQaYHz-7h2noYc"
@@ -41,10 +45,36 @@
             ],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"username\": \"germangp62@gmail.com\",\n  \"password\": \"1234\",\n  \"superUser\": \"True\"\n}",
+                "raw": "{\n  \"username\": \"germangp622@gmail.com\",\n  \"password\": \"1234\",\n  \"superUser\": \"True\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "bb6594f0-acbe-4734-83f9-51e546f698f7",
+            "colId": "ad89ea21-6d5e-416d-8f63-e7dc90024416",
+            "containerId": "",
+            "name": "Generar reserva",
+            "url": "http://localhost:5001/api/terceros/almacenaReserva",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2025-05-25T11:32:24.764Z",
+            "modified": "2025-05-25T11:39:43.597Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                },
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODEzMTA3MywianRpIjoiNmZjZDI1NGUtMjcwZS00YTVkLThjZDktNGM5NzJlNjBkOTlhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiYWRtaW4zXCJ9IiwibmJmIjoxNzQ4MTMxMDczLCJjc3JmIjoiYzgyY2NiYjUtYTBkYy00YzFhLWI2ZTMtZmU3NzcxYjgwMzE4IiwiZXhwIjoxNzQ4MjE3NDczfQ.rJfexgFNc0cdmes1tMw5CFiwq2j_1fQaYHz-7h2noYc"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\"unit_id\" : 6, \"check_in_date\": \"2025-1-24\", \"check_out_date\": \"2025-2-1\",\"price\": 500, \"amount_paid\": 250, \"guest\":{\"name\":\"Guillermo\", \"mail\":\"guillermo.fulstack@gmail.com\", \"phone\":\"12345678\"}}",
                 "form": []
             }
         }
     ],
-    "ref": "XdqyDVZGazT3JmFtBBlLt2G3vJR37BL7PTQsDlBfXqj2GKAcKq9NfXDZNSaEJM8cIS_NYRdFOlRNvgLacxIVvw"
+    "ref": "XdqyDVZGazT3JmFtBBlLt56RSDh8i7CKk6F0kcMm-ysQQ-Yc-N48r1MN3qNlE4G-A_PKL9a1lPvGu17hnYV6rw"
 }

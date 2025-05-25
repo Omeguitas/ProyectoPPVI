@@ -164,10 +164,11 @@ def generateReports():
 def saveReservation():
     data = request.get_json()
     dataGuest = data.get("guest")
-    guest = Guest(dataGuest.name, dataGuest.mail,dataGuest.phone,DB)
+    guest = Guest(dataGuest.get("name"), dataGuest.get("mail"),dataGuest.get("phone"),DB)
     guestId = guest.save()
-    reservation = Reservation(data.get("unit_id"), guestId, dt.date(data.get("check_in_date")), dt.date(data.get("check_out_date")), data.get("price"), data.get("amount_paid"), DB)
-    reservation.save()   
+    reservation = Reservation(data.get("unit_id"), guestId, dt.strptime(data.get("check_in_date"),"%Y-%m-%d"), dt.strptime(data.get("check_out_date"),"%Y-%m-%d"), data.get("price"), data.get("amount_paid"), DB)
+    return reservation.save()
+      
 
 
 if __name__ == "__main__":

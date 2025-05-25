@@ -18,23 +18,23 @@ class ControllerDB:
         params = []
         if criteria:
             query += " WHERE"
-            startDate = criteria.pop("start_date", False)
-            endDate = criteria.pop("end_date", False)
-            if (startDate and endDate):
+            check_in_date = criteria.pop("check_in_date", False)
+            check_out_date = criteria.pop("check_out_date", False)
+            if (check_in_date and check_out_date):
                 query += """ u.id NOT IN
                 (SELECT r.unit_id FROM reservation r WHERE
                 r.check_out_date > %s AND r.check_in_date < %s )"""
-                params = [startDate, endDate]
+                params = [check_in_date, check_out_date]
             
             amenities = criteria.pop("amenities",False)
             if amenities:
-                if not(startDate and endDate):
+                if not(check_in_date and check_out_date):
                     query += " 1=1" # Condición que no modifica el resultado, pero simplifica el armado de la query
                 for amenitie in amenities:
                     query += """ AND FIND_IN_SET(%s, amenities)"""
                     params.append(amenitie)
 
-            if not(amenities or startDate and endDate):
+            if not(amenities or check_in_date and check_out_date):
                 query += " 1=1" # Condición que no modifica el resultado, pero simplifica el armado de la query
             for key, value in criteria.items():
                 query += f" AND u.{key} = " + "%s"
@@ -185,25 +185,30 @@ class ControllerDB:
     
     def saveGuest(self, guest):
         id = None
-        result = self.searchIdGuestByMail()
-        if result.len()>0:
+        result = self.searchIdGuestByMail(guest)
+        if result:
             id = result[0]
         else:
             conn = self.mysql.connect()
             cursor = conn.cursor()
-            query = """INSERT INTO guest (name, email, phone)"""
+            query = """INSERT INTO guest (name, email, phone) VALUES(%s,%s,%s)"""
+            print(type(guest.name), type(guest.email), type(guest.phone))
             data = (guest.name, guest.email, guest.phone)
             cursor.execute(query, data)
             conn.commit()
-            id = cursor.lastrowid()
+            id = cursor.lastrowid
             conn.close()
         return id
     
     def createReservation(self, reservation):
-        conn = self.mysql.connect()
-        cursor = conn.cursor()
-        query = """INSERT INTO reservation (unit_id, guest_id, check_in_date, check_out_date, price, amount_paid) VALUES(%s,%s,%s,%s,%s,%s)"""
-        data = (reservation.unit_id, reservation.guest_id, reservation.check_in_date, reservation.check_out_date, reservation.price, reservation.amount_paid)
-        cursor.execute(query,data)
-        conn.commit()
-        conn.close()
+        if self.searchUnits({"check_in_date":reservation.check_in_date,"check_out_date": reservation.check_out_date,"id":reservation.unit_id}):
+            conn = self.mysql.connect()
+            cursor = conn.cursor()
+            query = """INSERT INTO reservation (unit_id, guest_id, check_in_date, check_out_date, price, amount_paid) VALUES(%s,%s,%s,%s,%s,%s)"""
+            data = (reservation.unit_id, reservation.guest_id, reservation.check_in_date, reservation.check_out_date, reservation.price, reservation.amount_paid)
+            cursor.execute(query,data)
+            conn.commit()
+            conn.close()
+            return {"message":"Reserva exitosa"}
+        return {"message":"La unidad ya se encuentra reservada en esas fechas"}
+        
