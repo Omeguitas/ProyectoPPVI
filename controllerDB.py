@@ -193,7 +193,6 @@ class ControllerDB:
             conn = self.mysql.connect()
             cursor = conn.cursor()
             query = """INSERT INTO guest (name, email, phone) VALUES(%s,%s,%s)"""
-            print(type(guest.name), type(guest.email), type(guest.phone))
             data = (guest.name, guest.email, guest.phone)
             cursor.execute(query, data)
             conn.commit()

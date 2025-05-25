@@ -60,7 +60,7 @@
         "description":"Devuelve un listado de unidades/unidades disponibles",
         "user":"Todos",
         "methods":"get, post",
-        "requiere":"Json{'start_date'?: Date, 'end_date'?: Date, 'rooms'?: int, 'beds'?: int, 'amenities'?: list[str]}?",
+        "requiere":"Json{'check_in_date'?: str(YYYY,MM,DD), 'check_out_date'?: str(YYYY,MM,DD), 'rooms'?: int, 'beds'?: int, 'amenities'?: list[str]}?",
         "return":"Json con lista de unidades según criterios"
     },
     "route ('/informes')": {

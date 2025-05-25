@@ -117,7 +117,6 @@ def verAdmins():
 @jwt_required()
 def createUnit():
     data = request.get_json()
-    # print(data)
     unit = Unit(data.get("rooms", False), data.get("beds", False), data.get("description", False), data.get("price", False), data.get("amenities", False), data.get("urls_fotos", False), DB)
     result = unit.save()
     return jsonify(result)
