@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "Pruebas de api/BDD",
     "collectionId": "ad89ea21-6d5e-416d-8f63-e7dc90024416",
-    "dateExported": "2025-05-25T12:31:34.771Z",
+    "dateExported": "2025-05-25T12:43:27.358Z",
     "version": "1.2",
     "folders": [],
     "requests": [
@@ -121,7 +121,33 @@
                 "raw": "{\"rooms\":2, \"beds\":4, \"description\":\"Cabaña estilo americana con vista al lago\", \"price\": 1000, \"amenities\":[\"Cocina completa\",\"Baño en suite\",\"Balcon\", \"Ducha escocesa\"], \"urls_fotos\":[\"https://cf.bstatic.com/xdata/images/hotel/max1024x768/414428911.jpg?k=dd5c62092ece84129e41a11c4b572672a3bb5f4570d37102d3449d1505a151bf&o=&hp=1\"]}",
                 "form": []
             }
+        },
+        {
+            "_id": "e772d98e-84ca-4a71-8271-335f6abd06fd",
+            "colId": "ad89ea21-6d5e-416d-8f63-e7dc90024416",
+            "containerId": "",
+            "name": "Editar unidad",
+            "url": "http://localhost:5001/editarUnidad",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2025-05-25T12:34:52.219Z",
+            "modified": "2025-05-25T12:40:54.100Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                },
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODEzMTA3MywianRpIjoiNmZjZDI1NGUtMjcwZS00YTVkLThjZDktNGM5NzJlNjBkOTlhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiYWRtaW4zXCJ9IiwibmJmIjoxNzQ4MTMxMDczLCJjc3JmIjoiYzgyY2NiYjUtYTBkYy00YzFhLWI2ZTMtZmU3NzcxYjgwMzE4IiwiZXhwIjoxNzQ4MjE3NDczfQ.rJfexgFNc0cdmes1tMw5CFiwq2j_1fQaYHz-7h2noYc"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\"rooms\":2, \"beds\":4, \"description\":\"Cabaña estilo americana con vista al lago\", \"price\": 1000, \"amenities\":[\"Cocina completa\",\"toilet en suite\",\"Balcon\", \"Ducha escocesa\"], \"urls_fotos\":[\"https://cf.bstatic.com/xdata/images/hotel/max1024x768/414428911.jpg?k=dd5c62092ece84129e41a11c4b572672a3bb5f4570d37102d3449d1505a151bf&o=&hp=1\"],\"id\": 11}",
+                "form": []
+            }
         }
     ],
-    "ref": "XdqyDVZGazT3JmFtBBlLt5WVfTFS2EnkoPVoF4KYd8oobRgu80VwQGMoDEzyyltcQxvIaEYFEcQjS-ngyrDCDw"
+    "ref": "XdqyDVZGazT3JmFtBBlLtyNyPquR6U_pxU2_2TuBzMOyzu-qoQkvS-pE5DQmRapTBYePYfAt_VlTLPhoyRSvyA"
 }
