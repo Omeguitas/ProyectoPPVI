@@ -1,6 +1,7 @@
 from flaskext.mysql import MySQL
 from datetime import datetime
 from werkzeug.security import generate_password_hash as hashear, check_password_hash
+import json
 
 # import clases.admin
 
@@ -56,7 +57,7 @@ class ControllerDB:
         conn = self.mysql.connect()
         cursor = conn.cursor()
         query = """INSERT INTO unit (rooms, beds, description, price, amenities, urls_fotos) VALUES(%s,%s,%s,%s,%s,%s)"""
-        data = unit.rooms, unit.beds, unit.description, unit.price, unit.amenities, unit.urls_fotos
+        data = unit.rooms, unit.beds, unit.description, unit.price, json.dumps(unit.amenities), json.dumps(unit.urls_fotos)
         cursor.execute(query,data)
         conn.commit()
         conn.close()

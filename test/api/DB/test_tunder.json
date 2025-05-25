@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "Pruebas de api/BDD",
     "collectionId": "ad89ea21-6d5e-416d-8f63-e7dc90024416",
-    "dateExported": "2025-05-25T11:40:14.336Z",
+    "dateExported": "2025-05-25T12:31:34.771Z",
     "version": "1.2",
     "folders": [],
     "requests": [
@@ -74,7 +74,54 @@
                 "raw": "{\"unit_id\" : 6, \"check_in_date\": \"2025-1-24\", \"check_out_date\": \"2025-2-1\",\"price\": 500, \"amount_paid\": 250, \"guest\":{\"name\":\"Guillermo\", \"mail\":\"guillermo.fulstack@gmail.com\", \"phone\":\"12345678\"}}",
                 "form": []
             }
+        },
+        {
+            "_id": "4469ec8e-6674-4846-9bbf-c095a0093111",
+            "colId": "ad89ea21-6d5e-416d-8f63-e7dc90024416",
+            "containerId": "",
+            "name": "Ver Admins",
+            "url": "http://localhost:5001/verAdmins",
+            "method": "GET",
+            "sortNum": 45000,
+            "created": "2025-05-25T11:44:33.001Z",
+            "modified": "2025-05-25T12:04:54.684Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                },
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODEzMTA3MywianRpIjoiNmZjZDI1NGUtMjcwZS00YTVkLThjZDktNGM5NzJlNjBkOTlhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiYWRtaW4zXCJ9IiwibmJmIjoxNzQ4MTMxMDczLCJjc3JmIjoiYzgyY2NiYjUtYTBkYy00YzFhLWI2ZTMtZmU3NzcxYjgwMzE4IiwiZXhwIjoxNzQ4MjE3NDczfQ.rJfexgFNc0cdmes1tMw5CFiwq2j_1fQaYHz-7h2noYc"
+                }
+            ]
+        },
+        {
+            "_id": "46936dd3-f177-4877-93bd-11601cb4d579",
+            "colId": "ad89ea21-6d5e-416d-8f63-e7dc90024416",
+            "containerId": "",
+            "name": "Crear unidad",
+            "url": "http://localhost:5001/creaUnidad",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2025-05-25T12:05:35.931Z",
+            "modified": "2025-05-25T12:17:26.575Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                },
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODEzMTA3MywianRpIjoiNmZjZDI1NGUtMjcwZS00YTVkLThjZDktNGM5NzJlNjBkOTlhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiYWRtaW4zXCJ9IiwibmJmIjoxNzQ4MTMxMDczLCJjc3JmIjoiYzgyY2NiYjUtYTBkYy00YzFhLWI2ZTMtZmU3NzcxYjgwMzE4IiwiZXhwIjoxNzQ4MjE3NDczfQ.rJfexgFNc0cdmes1tMw5CFiwq2j_1fQaYHz-7h2noYc"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\"rooms\":2, \"beds\":4, \"description\":\"Cabaña estilo americana con vista al lago\", \"price\": 1000, \"amenities\":[\"Cocina completa\",\"Baño en suite\",\"Balcon\", \"Ducha escocesa\"], \"urls_fotos\":[\"https://cf.bstatic.com/xdata/images/hotel/max1024x768/414428911.jpg?k=dd5c62092ece84129e41a11c4b572672a3bb5f4570d37102d3449d1505a151bf&o=&hp=1\"]}",
+                "form": []
+            }
         }
     ],
-    "ref": "XdqyDVZGazT3JmFtBBlLt56RSDh8i7CKk6F0kcMm-ysQQ-Yc-N48r1MN3qNlE4G-A_PKL9a1lPvGu17hnYV6rw"
+    "ref": "XdqyDVZGazT3JmFtBBlLt5WVfTFS2EnkoPVoF4KYd8oobRgu80VwQGMoDEzyyltcQxvIaEYFEcQjS-ngyrDCDw"
 }
