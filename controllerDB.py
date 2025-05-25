@@ -75,7 +75,7 @@ class ControllerDB:
         amenities = %s,
         urls_fotos = %s
         WHERE id LIKE %s"""
-        data = (unit.rooms, unit.beds, unit.description, unit.price, unit.amenities, unit.urls_fotos, unit.id)
+        data = (unit.rooms, unit.beds, unit.description, unit.price, json.dumps(unit.amenities), json.dumps(unit.urls_fotos), unit.id)
         cursor.execute(query,data)
         conn.commit()
         message = ""

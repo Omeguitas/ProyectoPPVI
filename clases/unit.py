@@ -10,7 +10,6 @@ class Unit:
         self.id = id
 
     def save(self):
-        print(self.rooms, self.beds, self.price,"**********")
         if not(self.rooms and self.beds and self.price):
             return '{"msg":"datos incompletos"}'
         else:
