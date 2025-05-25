@@ -124,7 +124,8 @@ class ControllerDB:
             conn = self.mysql.connect()
             cursor = conn.cursor()
             query = """INSERT INTO admin (username, password, superUser) VALUES(%s,%s,%s)"""
-            cursor.execute(query,(admin.username,hashear(admin.pasword),admin.superUser))
+            data = (admin.username,hashear(admin.password),admin.superUser=="True")
+            cursor.execute(query,data)
             conn.commit()
             conn.close()
             return f"{admin.username} registrado exitosamente"

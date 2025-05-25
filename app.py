@@ -7,7 +7,7 @@ from flaskext.mysql import MySQL
 from flask_mail import Mail, Message
 from controllerDB import ControllerDB
 from dotenv import load_dotenv
-from datetime import datetime as dt
+from datetime import datetime as dt, timedelta
 from clases.admin import Admin
 from clases.unit import Unit
 from clases import reports
@@ -72,9 +72,10 @@ def login():
     admin = Admin(DB, username, password)
     admin.authenticate()
     if admin.authenticated:
+        a = 1.0
         #  Incluye información del usuario que necesites en la identidad del token
         userIdentity = f'{{"superUser": {json.dumps(admin.superUser)}, "username": {json.dumps(admin.username)}}}'
-        accessToken = create_access_token(identity=userIdentity)  # Crea el token
+        accessToken = create_access_token(identity=userIdentity,expires_delta=timedelta(1))  # Crea el token
         return jsonify(access_token=accessToken), 200  # Devuelve el token en la respuesta
     else:
         return jsonify({"error": "Credenciales inválidas"}), 401  # Devuelve error si la autenticación falla

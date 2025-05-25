@@ -1,0 +1,50 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Pruebas de api/BDD",
+    "collectionId": "ad89ea21-6d5e-416d-8f63-e7dc90024416",
+    "dateExported": "2025-05-25T00:08:38.137Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "20ae39d6-196e-46a0-bf83-976a50e10588",
+            "colId": "ad89ea21-6d5e-416d-8f63-e7dc90024416",
+            "containerId": "",
+            "name": "Login",
+            "url": "http://localhost:5001/login",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2025-05-24T23:51:12.268Z",
+            "modified": "2025-05-25T00:04:55.572Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\": \"admin3\",\n  \"password\": \"admin\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "6893c33a-2fba-462b-a89e-c7807bcbce94",
+            "colId": "ad89ea21-6d5e-416d-8f63-e7dc90024416",
+            "containerId": "",
+            "name": "Register new admin",
+            "url": "http://localhost:5001/crearAdmin",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2025-05-24T23:48:19.319Z",
+            "modified": "2025-05-25T00:07:23.796Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODEzMTA3MywianRpIjoiNmZjZDI1NGUtMjcwZS00YTVkLThjZDktNGM5NzJlNjBkOTlhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiYWRtaW4zXCJ9IiwibmJmIjoxNzQ4MTMxMDczLCJjc3JmIjoiYzgyY2NiYjUtYTBkYy00YzFhLWI2ZTMtZmU3NzcxYjgwMzE4IiwiZXhwIjoxNzQ4MjE3NDczfQ.rJfexgFNc0cdmes1tMw5CFiwq2j_1fQaYHz-7h2noYc"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\": \"germangp62@gmail.com\",\n  \"password\": \"1234\",\n  \"superUser\": \"True\"\n}",
+                "form": []
+            }
+        }
+    ],
+    "ref": "XdqyDVZGazT3JmFtBBlLt2G3vJR37BL7PTQsDlBfXqj2GKAcKq9NfXDZNSaEJM8cIS_NYRdFOlRNvgLacxIVvw"
+}
