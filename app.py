@@ -157,7 +157,7 @@ def generateReports():
     message = {}
     recipient = json.loads(get_jwt_identity()).get("username")
     # recipient = "guillermo.fullstack@gmail.com"
-    message = reports.sendReports(app, mail,recipient,DB)
+    message = reports.sendReports(app, recipient, DB)
     # for recipient in ["guillermo.fullstack@gmail.com","carol.ceron801@gmail.com","germangp62@gmail.com","msoledadm88@gmail.com"]:
     #     message[recipient] = reports.sendReports(app, mail,recipient,DB)
     return message

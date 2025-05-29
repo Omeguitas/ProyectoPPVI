@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 
 load_dotenv() 
 
-def sendMail(app, mail, recipient, message:str,files:list):
+def sendMail(app, recipient, message:str,files:list):
     sender=app.config['MAIL_DEFAULT_SENDER']
     msg = Message(message,
         sender=sender,
@@ -45,18 +45,19 @@ def sendMail(app, mail, recipient, message:str,files:list):
         return f'{{"message":"Error al enviar el correo electrónico: {e}"}}' 
 
 
-def sendReports(app, mail, recipient,DB):
+def sendReports(app, recipient,DB):
     files = []
     bufferIncomeReports = generateIncomeReports(DB)
     bufferoccupationReport = generateOcupationReport(DB)
     if bufferoccupationReport:
-        bufferoccupationReport.seek(0)
-        files.append(("ocupación_mensual.png", "image/png", bufferoccupationReport.read()))
+        for buffer in bufferoccupationReport:
+            buffer[0].seek(0)
+            files.append((f"{buffer[1]}.png", "image/png", buffer[0].read()))
     if bufferIncomeReports:
         bufferIncomeReports.seek(0)
         files.append(("ingresos_mensuales.png", "image/png", bufferIncomeReports.read()))
     message = "Adjunto encontrarás los informes de ingresos y ocupación en formato de imagen."
-    respuesta = sendMail(app, mail, recipient, message,files)
+    respuesta = sendMail(app, recipient, message,files)
     return respuesta
     
 
@@ -91,41 +92,55 @@ def generateOcupationReport(DB):
     reservations = DB.getReservations()
     numberOfUnits = DB.getTotalUnits()
     if reservations:
-        months, ocupations = generateoccupationData(reservations, numberOfUnits)
-        print(months,ocupations)
-        plt.figure(figsize=(8, 6))
-        plt.bar(months, ocupations)
-        plt.xlabel('Mes')
-        plt.ylabel('Ocupación')
-        plt.title('Ocupación Mensual')
-        plt.xticks(rotation=45, ha='right')
-        plt.tight_layout()
-        plt.ylim(0,100)
+        periods, ocupations = generateoccupationData(reservations, numberOfUnits,"m")
+        i = 0
+        buffers = []
+        print(periods,ocupations)
+        while i < len(periods)/30:
+            subGroupPeriods, subGroupOcupations = periods[i*30:(i+1)*30], ocupations[i*30:(i+1)*30]
+            title = f"Ocupación {subGroupPeriods[0]}/{subGroupPeriods[-1]}"
+            plt.figure(figsize=(8, 6))
+            plt.bar(subGroupPeriods, subGroupOcupations)
+            plt.xlabel('Mes')
+            plt.ylabel('Ocupación')
+            plt.title(title)
+            plt.xticks(rotation=45, ha='right')
+            plt.tight_layout()
+            plt.ylim(0,100)
 
-        for month, ocupation in zip(months, ocupations):
-            plt.text(month, ocupation / 2, f'{ocupation}%', ha='center', va='center', color='white', rotation=90) #agrego el monto
+            for period, ocupation in zip(subGroupPeriods, subGroupOcupations):
+                plt.text(period, ocupation / 2, f'{ocupation}%', ha='center', va='center', color='white', rotation=90) #agrego el monto
 
-        # Guardar el gráfico en un buffer de memoria
-        buffer = io.BytesIO()
-        plt.savefig(buffer, format='png')
-        buffer.seek(0)
-        plt.close()
-        return buffer
+            # Guardar el gráfico en un buffer de memoria
+            buffer = io.BytesIO()
+            plt.savefig(buffer, format='png')
+            buffer.seek(0)
+            plt.close()
+            buffers.append((buffer,title))
+            i += 1
+        return buffers
     return None
 
 
-def generateoccupationData(reservations,numberOfUnits, inicio = None, fin = None):
+def generateoccupationData(reservations, numberOfUnits, groupBy:str= "month", inicio:dt = None, fin:dt = None):
+    strGroupBy = ""
+    match groupBy.lower():
+        case "y" | "year" :
+            strGroupBy = "%Y"
+        case "m" | "month":
+            strGroupBy = "%Y-%m"
+        case "d" | "day":
+            strGroupBy = "%Y-%m-%d"
+        case _:
+            return "cadena incorrecta para groupBy"
     if not inicio:
         inicio = reservations[0][3]
-    else:
-        inicio = dt(inicio)
     if not fin:
         fin = max([i[4] for i in reservations])
-    else:
-        fin = dt(fin)
 
-    actual = inicio
-    days = [inicio]
+    fin = (fin+td(days=32-fin.day)).replace(day = 1)-td(days=1)
+    actual = inicio.replace(day=1)
+    days = []
     ocupations = []
     while actual <= fin:
         days.append(actual)
@@ -137,15 +152,15 @@ def generateoccupationData(reservations,numberOfUnits, inicio = None, fin = None
         actual+=td(days=1)
     dictionary = {}
     for day, ocupation in zip(days, ocupations):
-        if not dictionary.get(day.strftime("%Y-%m"), False):
-            dictionary[day.strftime("%Y-%m")] = []
-        dictionary[day.strftime("%Y-%m")].append(ocupation)
-    months = []
+        if not dictionary.get(day.strftime(strGroupBy), False):
+            dictionary[day.strftime(strGroupBy)] = []
+        dictionary[day.strftime(strGroupBy)].append(ocupation)
+    period = []
     percentages = []
     for key,value in dictionary.items():
-        months.append(key)
+        period.append(key)
         percentages.append(round(sum(value)/len(value), 2))
-    return months, percentages
+    return period, percentages
 
 
 
