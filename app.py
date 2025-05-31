@@ -148,7 +148,12 @@ def units():
         return jsonify(DB.searchUnits())
     elif request.method == "POST":
         criteria = request.get_json()
-        return jsonify(DB.searchUnits(criteria))
+        check_in_date, check_out_date = dt.strptime(criteria["check_in_date"],"%Y-%m-%d").date() , dt.strptime(criteria["check_out_date"],"%Y-%m-%d").date()
+        units = DB.searchUnits(criteria)
+        multipler = Unit.calculateMultipler(check_in_date, check_out_date, DB)
+        for unit in units:
+            unit["price"] = round(float(unit["price"]) * multipler)
+        return jsonify(units)
 
 
 @app.route("/informes")
@@ -172,6 +177,8 @@ def saveReservation():
     reservation = Reservation(data.get("unit_id"), guestId, dt.strptime(data.get("check_in_date"),"%Y-%m-%d"), dt.strptime(data.get("check_out_date"),"%Y-%m-%d"), data.get("price"), data.get("amount_paid"), DB)
     return reservation.save()
       
+
+
 
 
 if __name__ == "__main__":

@@ -1,3 +1,4 @@
+from clases.reports import generateoccupationData
 class Unit:
     def __init__(self, rooms: int, beds: int, description: str, price: float, amenities: list, urls_fotos: list, DB, id = None):
         self.rooms = rooms
@@ -20,3 +21,18 @@ class Unit:
             return '{"msg":"datos incompletos"}'
         else:
             return self.DB.modifyUnit(self)
+        
+    @staticmethod
+    def calculateMultipler(since, until, DB):
+        percentages = generateoccupationData(DB, "d", since, until)[1]
+        print(len(percentages),percentages)
+        avgPercentages = sum(percentages)/len(percentages)
+        multiplerSeason = DB.getSeasonRates(since,until)
+        if multiplerSeason:
+            avgMultiplerSeason = sum(element[0] for element in multiplerSeason)/len(multiplerSeason)
+        else:
+            avgMultiplerSeason = 1
+        print(avgMultiplerSeason, avgPercentages)
+        multipler = 1 + avgPercentages + avgMultiplerSeason
+        multipler = (1 + avgPercentages/100) * avgMultiplerSeason
+        return multipler

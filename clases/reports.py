@@ -89,40 +89,41 @@ def generateIncomeReports(DB):
 
 
 def generateOcupationReport(DB):
-    reservations = DB.getReservations()
-    numberOfUnits = DB.getTotalUnits()
-    if reservations:
-        periods, ocupations = generateoccupationData(reservations, numberOfUnits,"m")
-        i = 0
-        buffers = []
-        print(periods,ocupations)
-        while i < len(periods)/30:
-            subGroupPeriods, subGroupOcupations = periods[i*30:(i+1)*30], ocupations[i*30:(i+1)*30]
-            title = f"Ocupación {subGroupPeriods[0]}/{subGroupPeriods[-1]}"
-            plt.figure(figsize=(8, 6))
-            plt.bar(subGroupPeriods, subGroupOcupations)
-            plt.xlabel('Mes')
-            plt.ylabel('Ocupación')
-            plt.title(title)
-            plt.xticks(rotation=45, ha='right')
-            plt.tight_layout()
-            plt.ylim(0,100)
+    
+    
+    periods, ocupations = generateoccupationData(DB, "m")
+    i = 0
+    buffers = []
+    print(periods,ocupations)
+    while i < len(periods)/30:
+        subGroupPeriods, subGroupOcupations = periods[i*30:(i+1)*30], ocupations[i*30:(i+1)*30]
+        title = f"Ocupación {subGroupPeriods[0]}/{subGroupPeriods[-1]}"
+        plt.figure(figsize=(8, 6))
+        plt.bar(subGroupPeriods, subGroupOcupations)
+        plt.xlabel('Mes')
+        plt.ylabel('Ocupación')
+        plt.title(title)
+        plt.xticks(rotation=45, ha='right')
+        plt.tight_layout()
+        plt.ylim(0,100)
 
-            for period, ocupation in zip(subGroupPeriods, subGroupOcupations):
-                plt.text(period, ocupation / 2, f'{ocupation}%', ha='center', va='center', color='white', rotation=90) #agrego el monto
+        for period, ocupation in zip(subGroupPeriods, subGroupOcupations):
+            plt.text(period, ocupation / 2, f'{ocupation}%', ha='center', va='center', color='white', rotation=90) #agrego el monto
 
-            # Guardar el gráfico en un buffer de memoria
-            buffer = io.BytesIO()
-            plt.savefig(buffer, format='png')
-            buffer.seek(0)
-            plt.close()
-            buffers.append((buffer,title))
-            i += 1
-        return buffers
+        # Guardar el gráfico en un buffer de memoria
+        buffer = io.BytesIO()
+        plt.savefig(buffer, format='png')
+        buffer.seek(0)
+        plt.close()
+        buffers.append((buffer,title))
+        i += 1
+    return buffers
     return None
 
 
-def generateoccupationData(reservations, numberOfUnits, groupBy:str= "month", inicio:dt = None, fin:dt = None):
+def generateoccupationData(DB, groupBy:str= "month", inicio:dt = None, fin:dt = None):
+    reservations = DB.getReservations()
+    numberOfUnits = DB.getTotalUnits()
     strGroupBy = ""
     match groupBy.lower():
         case "y" | "year" :

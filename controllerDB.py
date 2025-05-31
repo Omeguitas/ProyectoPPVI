@@ -2,6 +2,7 @@ from flaskext.mysql import MySQL
 from datetime import datetime
 from werkzeug.security import generate_password_hash as hashear, check_password_hash
 import json
+from datetime import timedelta as td
 
 # import clases.admin
 
@@ -212,3 +213,21 @@ class ControllerDB:
             return {"message":"Reserva exitosa"}
         return {"message":"La unidad ya se encuentra reservada en esas fechas"}
         
+
+
+    def getSeasonRates(self, since, until):
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        query = """SELECT multiplier FROM season_rates WHERE"""
+        actual = since
+        fechas = []
+        while actual < until:
+            query += "%s BETWEEN since AND until OR"
+            fechas.append(actual)
+            actual += td(days=1)
+        query += "%s BETWEEN since AND until"
+        fechas.append(actual)
+        cursor.execute(query,fechas)
+        result = cursor.fetchall()
+        conn.close()
+        return result
