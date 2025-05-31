@@ -2,6 +2,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import io
+import json
 import os
 import smtplib
 import base64
@@ -176,7 +177,18 @@ def obtener_credenciales():
     """Obtiene las credenciales de OAuth 2.0 desde variables de entorno.
     """
     creds = None
-    if os.path.exists("token.json"):
+
+    token_json_str = os.environ.get("GOOGLE_TOKEN_JSON")
+    if token_json_str:
+        try:
+            # Parsear la cadena JSON de la variable de entorno
+            creds_info = json.loads(token_json_str)
+            creds = Credentials.from_authorized_user_info(creds_info, SCOPES)
+        except Exception as e:
+            print(f"Error al cargar credenciales desde GOOGLE_TOKEN_JSON: {e}")
+            creds = None # Si hay un error, se descartará y pasará al siguiente paso.
+
+    if not creds and os.path.exists("token.json"):
         creds = Credentials.from_authorized_user_file("token.json", SCOPES)
 
     if creds and not creds.valid:
