@@ -49,7 +49,6 @@ class ControllerDB:
         # Construir la lista de diccionarios
         dicc_list = []
         for unit in units:
-            # Crear un diccionario para cada fila, usando zip para emparejar nombres y valores
             unit_dicc = dict(zip(columns_name, unit))
             dicc_list.append(unit_dicc)
         return dicc_list
@@ -69,13 +68,13 @@ class ControllerDB:
         conn = self.mysql.connect()
         cursor = conn.cursor()
         query = """UPDATE unit SET
-        rooms = %s,
-        beds = %s,
-        description = %s,
-        price = %s,
-        amenities = %s,
-        urls_fotos = %s
-        WHERE id LIKE %s"""
+            rooms = %s,
+            beds = %s,
+            description = %s,
+            price = %s,
+            amenities = %s,
+            urls_fotos = %s
+            WHERE id LIKE %s"""
         data = (unit.rooms, unit.beds, unit.description, unit.price, json.dumps(unit.amenities), unit.urls_fotos, unit.id)
         cursor.execute(query,data)
         conn.commit()
@@ -135,10 +134,6 @@ class ControllerDB:
             return "Administrador ya registrado"
 
     
-
-    def generateReservation(self):
-        pass
-
 
     def auxVerAdmins(self):
         conn = self.mysql.connect()

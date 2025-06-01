@@ -27,7 +27,6 @@ def sendMail(app, recipient, message:str,files:list):
         msg.attach(file[0],file[1],file[2])
 
     creds = obtener_credenciales()
-    # sender = creds.from_addr
     try:
     # Conexión con el servidor de Gmail
         server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -37,8 +36,6 @@ def sendMail(app, recipient, message:str,files:list):
             f"user={sender}\1auth=Bearer {creds.token}\1\1".encode("utf-8")
         ).decode("utf-8")
         server.docmd("AUTH", "XOAUTH2 " + auth_string)
-        # server.login(sender, creds.token) # Usa el token obtenido
-        # server.sendmail(sender, recipient, msg.as_string())
         server.sendmail(sender, recipient, msg.as_string().encode('utf-8'))
         server.quit()
         return '{"message":"Correo electrónico enviado con éxito."}'
@@ -95,7 +92,6 @@ def generateOcupationReport(DB):
     periods, ocupations = generateoccupationData(DB, "m")
     i = 0
     buffers = []
-    print(periods,ocupations)
     while i < len(periods)/30:
         subGroupPeriods, subGroupOcupations = periods[i*30:(i+1)*30], ocupations[i*30:(i+1)*30]
         title = f"Ocupación {subGroupPeriods[0]}/{subGroupPeriods[-1]}"
@@ -119,7 +115,6 @@ def generateOcupationReport(DB):
         buffers.append((buffer,title))
         i += 1
     return buffers
-    return None
 
 
 def generateoccupationData(DB, groupBy:str= "month", inicio:dt = None, fin:dt = None):
@@ -207,7 +202,7 @@ def obtener_credenciales():
             {
                 "installed": {
                     "client_id": client_id,
-                    "redirect_uris": ["http://localhost:8080"],  # Añade esto
+                    "redirect_uris": ["http://localhost:8080"],
                     "auth_uri": "https://accounts.google.com/o/oauth2/auth",
                     "token_uri": "https://oauth2.googleapis.com/token",
                     "client_secret": client_secret

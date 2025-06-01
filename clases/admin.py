@@ -17,6 +17,3 @@ class Admin:
         self.DB.autenticateAdmin(self)
         
             
-
-    def addUnity(self,unity):
-        pass
