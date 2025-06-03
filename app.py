@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
 from flaskext.mysql import MySQL
-from flask_mail import Mail
+from flask_mail import Mail, Message
 from controllerDB import ControllerDB
 from dotenv import load_dotenv
 from datetime import datetime as dt, timedelta
@@ -16,6 +16,7 @@ from clases.reservation import Reservation
 
 
 load_dotenv()
+folder = os.path.join('fotos') # Referencia a la carpeta
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
@@ -160,7 +161,10 @@ def units():
 def generateReports():
     message = {}
     recipient = json.loads(get_jwt_identity()).get("username")
+    # recipient = "guillermo.fullstack@gmail.com"
     message = reports.sendReports(app, recipient, DB)
+    # for recipient in ["guillermo.fullstack@gmail.com","carol.ceron801@gmail.com","germangp62@gmail.com","msoledadm88@gmail.com"]:
+    #     message[recipient] = reports.sendReports(app, mail,recipient,DB)
     return message
 
 
@@ -174,6 +178,13 @@ def saveReservation():
     return reservation.save()
       
 
+@app.route("/motor", methods = ['POST','GET'])
+@jwt_required()
+def datos_multiplicador():
+    if request.method == "POST":
+        data = request.get_json()
+        DB.setSeasonRates(data)
+    return DB.getSeasonRates(), 200
 
 
 

@@ -226,3 +226,27 @@ class ControllerDB:
         result = cursor.fetchall()
         conn.close()
         return result
+
+
+    def setSeasonRates(self, data):
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        queryDelete = """DELETE FROM season_rates"""
+        cursor.execute(queryDelete)
+        conn.commit()
+        for element in data:
+            queryInsert = """INSERT INTO season_rates (since, until, multiplier) VALUES(%s,%s,%s)"""
+            values = (datetime.strptime(element[0],"%Y-%m-%d"),datetime.strptime(element[1],"%Y-%m-%d"),float(element[2]))
+            cursor.execute(queryInsert,values)
+        conn.commit()
+        conn.close()
+
+
+    def getSeasonRates(self):
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        query = """SELECT * FROM season_rates"""
+        cursor.execute(query)
+        data = cursor.fetchall()
+        conn.close()
+        return data

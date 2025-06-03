@@ -26,6 +26,7 @@ class Unit:
     def calculateMultipler(since, until, DB):
         percentages = generateoccupationData(DB, "d", since, until)[1]
         avgPercentages = sum(percentages)/len(percentages)
+        # TODO manejar cuando no todos los dias tienen multiplicador
         multiplerSeason = DB.getSeasonRates(since,until)
         if multiplerSeason:
             avgMultiplerSeason = sum(element[0] for element in multiplerSeason)/len(multiplerSeason)
@@ -34,3 +35,12 @@ class Unit:
         multipler = 1 + avgPercentages + avgMultiplerSeason
         multipler = (1 + avgPercentages/100) * avgMultiplerSeason
         return multipler
+
+
+""""
+pi*Ocupacion*temporada
+PI * (o+t)
+
+10 * 2 * 0.3 =60
+10 *(2+3) =50
+"""
