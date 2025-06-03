@@ -1,6 +1,6 @@
 from clases.reports import generateoccupationData
 class Unit:
-    def __init__(self, rooms: int, beds: int, description: str, price: float, amenities: list, urls_fotos: list, DB, id = None):
+    def __init__(self, rooms: int, beds: int, description: str, price: float, amenities: list, urls_fotos: list, DB,title,bathrooms,address, id = None):
         self.rooms = rooms
         self.beds = beds
         self.description = description
@@ -9,6 +9,9 @@ class Unit:
         self.urls_fotos = urls_fotos
         self.DB = DB
         self.id = id
+        self.title = title
+        self.bathrooms = bathrooms
+        self.address = address
 
     def save(self):
         if not(self.rooms and self.beds and self.price):

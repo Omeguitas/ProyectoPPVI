@@ -56,8 +56,8 @@ class ControllerDB:
     def createUnit(self, unit):
         conn = self.mysql.connect()
         cursor = conn.cursor()
-        query = """INSERT INTO unit (rooms, beds, description, price, amenities, urls_fotos) VALUES(%s,%s,%s,%s,%s,%s)"""
-        data = unit.rooms, unit.beds, unit.description, unit.price, json.dumps(unit.amenities),unit.urls_fotos
+        query = """INSERT INTO unit (rooms, beds, description, price, amenities, urls_fotos,title,bathrooms,address) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+        data = unit.rooms, unit.beds, unit.description, unit.price, json.dumps(unit.amenities),unit.urls_fotos,unit.title,unit.bathrooms,unit.address
         cursor.execute(query,data)
         conn.commit()
         conn.close()
@@ -73,9 +73,12 @@ class ControllerDB:
             description = %s,
             price = %s,
             amenities = %s,
-            urls_fotos = %s
+            urls_fotos = %s,
+            title = %s,
+            bathrooms = %s,
+            address = %s
             WHERE id LIKE %s"""
-        data = (unit.rooms, unit.beds, unit.description, unit.price, json.dumps(unit.amenities), unit.urls_fotos, unit.id)
+        data = (unit.rooms, unit.beds, unit.description, unit.price, json.dumps(unit.amenities), unit.urls_fotos,unit.title,unit.bathrooms,unit.address, unit.id)
         cursor.execute(query,data)
         conn.commit()
         message = ""

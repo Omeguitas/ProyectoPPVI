@@ -117,7 +117,7 @@ def verAdmins():
 @jwt_required()
 def createUnit():
     data = request.get_json()
-    unit = Unit(data.get("rooms", False), data.get("beds", False), data.get("description", False), data.get("price", False), data.get("amenities", False), data.get("urls_fotos", False), DB)
+    unit = Unit(data.get("rooms", False), data.get("beds", False), data.get("description", False), data.get("price", False), data.get("amenities", False), data.get("urls_fotos", False), DB, data.get("title", ""),data.get("bathrooms", 0),data.get("address", ""))
     result = unit.save()
     return jsonify(result)
 
@@ -125,7 +125,7 @@ def createUnit():
 @jwt_required()
 def editUnit():
     data = request.get_json()
-    unit = Unit(data.get("rooms", False), data.get("beds", False), data.get("description", False), data.get("price", False), data.get("amenities", False), data.get("urls_fotos", False), DB, data.get("id"))
+    unit = Unit(data.get("rooms", False), data.get("beds", False), data.get("description", False), data.get("price", False), data.get("amenities", False), data.get("urls_fotos", False), DB, data.get("title", ""),data.get("bathrooms", 0),data.get("address", ""), data.get("id"))
     result = unit.edit()
     return jsonify(result)
 
