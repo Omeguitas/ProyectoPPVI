@@ -213,22 +213,32 @@ class ControllerDB:
         
 
 
-    def getSeasonRates(self, since, until):
+    def getSeasonRates(self, since=None, until=None):
         conn = self.mysql.connect()
         cursor = conn.cursor()
-        query = """SELECT multiplier FROM season_rates WHERE"""
-        actual = since
+        query = """SELECT * FROM season_rates"""
         fechas = []
-        while actual < until:
-            query += "%s BETWEEN since AND until OR"
+        if since and until:
+            query +=" WHERE"
+            actual = since
+            while actual < until:
+                query += "%s BETWEEN since AND until OR"
+                fechas.append(actual)
+                actual += td(days=1)
+            query += "%s BETWEEN since AND until"
             fechas.append(actual)
-            actual += td(days=1)
-        query += "%s BETWEEN since AND until"
-        fechas.append(actual)
         cursor.execute(query,fechas)
         result = cursor.fetchall()
         conn.close()
-        return result
+        columns_name = [description[0] for description in cursor.description]
+        dicc_list = []
+        for season_rate in result:
+            season_rates_dicc = dict(zip(columns_name, season_rate))
+            season_rates_dicc['since'] = season_rates_dicc['since'].strftime("%Y-%m-%d")
+            season_rates_dicc['until'] = season_rates_dicc['until'].strftime("%Y-%m-%d")
+            dicc_list.append(season_rates_dicc)
+
+        return dicc_list
 
 
     def setSeasonRates(self, data):
@@ -237,19 +247,21 @@ class ControllerDB:
         queryDelete = """DELETE FROM season_rates"""
         cursor.execute(queryDelete)
         conn.commit()
+        count = 0
         for element in data:
             queryInsert = """INSERT INTO season_rates (since, until, multiplier) VALUES(%s,%s,%s)"""
             values = (datetime.strptime(element[0],"%Y-%m-%d"),datetime.strptime(element[1],"%Y-%m-%d"),float(element[2]))
-            cursor.execute(queryInsert,values)
+            count += cursor.execute(queryInsert,values)
         conn.commit()
         conn.close()
+        return count
 
 
-    def getSeasonRates(self):
-        conn = self.mysql.connect()
-        cursor = conn.cursor()
-        query = """SELECT * FROM season_rates"""
-        cursor.execute(query)
-        data = cursor.fetchall()
-        conn.close()
-        return data
+    # def getSeasonRates(self):
+    #     conn = self.mysql.connect()
+    #     cursor = conn.cursor()
+    #     query = """SELECT * FROM season_rates"""
+    #     cursor.execute(query)
+    #     data = cursor.fetchall()
+    #     conn.close()
+    #     return data

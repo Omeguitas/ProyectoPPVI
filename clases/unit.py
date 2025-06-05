@@ -30,13 +30,13 @@ class Unit:
         percentages = generateoccupationData(DB, "d", since, until)[1]
         avgPercentages = sum(percentages)/len(percentages)
         # TODO manejar cuando no todos los dias tienen multiplicador
-        multiplerSeason = DB.getSeasonRates(since,until)
-        if multiplerSeason:
-            avgMultiplerSeason = sum(element[0] for element in multiplerSeason)/len(multiplerSeason)
+        multiplierSeason = [element['multiplier'] for element in DB.getSeasonRates(since,until)]
+        if multiplierSeason:
+            avgMultiplierSeason = sum(multiplierSeason)/len(multiplierSeason)
         else:
-            avgMultiplerSeason = 1
-        multipler = 1 + avgPercentages + avgMultiplerSeason
-        multipler = (1 + avgPercentages/100) * avgMultiplerSeason
+            avgMultiplierSeason = 1
+        multipler = 1 + avgPercentages + avgMultiplierSeason
+        multipler = (1 + avgPercentages/100) * avgMultiplierSeason
         return multipler
 
 

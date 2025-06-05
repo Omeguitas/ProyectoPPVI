@@ -183,8 +183,9 @@ def saveReservation():
 def datos_multiplicador():
     if request.method == "POST":
         data = request.get_json()
-        DB.setSeasonRates(data)
-    return DB.getSeasonRates(), 200
+        count = DB.setSeasonRates(data)
+        return jsonify({"message": "Se han creado {count} periodos correctamente."})
+    return jsonify(DB.getSeasonRates()), 200
 
 
 
