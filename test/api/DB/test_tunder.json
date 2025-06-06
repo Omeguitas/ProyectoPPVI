@@ -2,7 +2,11 @@
     "clientName": "Thunder Client",
     "collectionName": "Pruebas de api/BDD",
     "collectionId": "ad89ea21-6d5e-416d-8f63-e7dc90024416",
+<<<<<<< HEAD
     "dateExported": "2025-06-05T20:08:36.704Z",
+=======
+    "dateExported": "2025-06-06T19:54:29.297Z",
+>>>>>>> eliminarAdmin
     "version": "1.2",
     "folders": [],
     "requests": [
@@ -286,9 +290,38 @@
                 {
                     "name": "Authorization",
                     "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODQ2OTgwMSwianRpIjoiMGJhODgzZmMtNDM5Ny00OTNiLTkyZmItZmM0NGRiMGUwNGI4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiZ3VpbGxlcm1vLmZ1bGxzdGFja0BnbWFpbC5jb21cIn0iLCJuYmYiOjE3NDg0Njk4MDEsImNzcmYiOiIxOGYwY2M2OC0wOTQwLTQwMDUtYjRmYy1kMGVhM2UxNjhiMjQiLCJleHAiOjE3NTcxMDk4MDF9.nnCKkY4O4_SYhFSIWoFfPA4oUjNjd5TDHsJM6DF73E0"
+<<<<<<< HEAD
+=======
+                }
+            ]
+        },
+        {
+            "_id": "42ad1310-9ead-45f5-9b8c-957b8b74e95c",
+            "colId": "ad89ea21-6d5e-416d-8f63-e7dc90024416",
+            "containerId": "",
+            "name": "Eliminar admin",
+            "url": "http://localhost:5001/deleteAdmin/1",
+            "method": "DELETE",
+            "sortNum": 130000,
+            "created": "2025-06-06T19:50:08.828Z",
+            "modified": "2025-06-06T19:52:53.925Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "isDisabled": true
+                },
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODQ2OTgwMSwianRpIjoiMGJhODgzZmMtNDM5Ny00OTNiLTkyZmItZmM0NGRiMGUwNGI4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiZ3VpbGxlcm1vLmZ1bGxzdGFja0BnbWFpbC5jb21cIn0iLCJuYmYiOjE3NDg0Njk4MDEsImNzcmYiOiIxOGYwY2M2OC0wOTQwLTQwMDUtYjRmYy1kMGVhM2UxNjhiMjQiLCJleHAiOjE3NTcxMDk4MDF9.nnCKkY4O4_SYhFSIWoFfPA4oUjNjd5TDHsJM6DF73E0"
+>>>>>>> eliminarAdmin
                 }
             ]
         }
     ],
+<<<<<<< HEAD
     "ref": "XdqyDVZGazT3JmFtBBlLt2TLCtH9s2rGZHveQycrVx4v0D-6rGv8d60ZRxQ48JuW6t80WKuPaky6Cvtf4tXXBw"
+=======
+    "ref": "XdqyDVZGazT3JmFtBBlLt_vzMR6HvJCLJb-MpsESJTI-mziuEF9RvjJs51KVlGSLDVhkuVnlGa54BV1qOtzEog"
+>>>>>>> eliminarAdmin
 }
