@@ -134,10 +134,15 @@ class ControllerDB:
         except:
             return "Administrador ya registrado"
 
-    
+    def deleteAdmin(self, id:int):
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        query = "DELETE FROM admin WHERE id = %s"
+        deleted = cursor.execute(query,(id)) > 0
+        conn.commit()
+        conn.close()
+        return deleted
 
-    def generateReservation(self):
-        pass
 
 
     def auxVerAdmins(self):

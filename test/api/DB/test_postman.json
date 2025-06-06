@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "daf29ad7-16a2-4046-9f8e-9d51679d8030",
+        "_postman_id": "0d6503de-5d62-473d-8db1-48dd8f905654",
         "name": "Pruebas de api/BDD",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         "description": ""
@@ -64,7 +64,7 @@
                             "language": "json"
                         }
                     },
-                    "raw": "{\n  \"username\": \"germangp622@gmail.com\",\n  \"password\": \"1234\",\n  \"superUser\": \"True\"\n}"
+                    "raw": "{\n  \"username\": \"msoledadm88@gmail.com\",\n  \"password\": \"1234\",\n  \"superUser\": \"True\"\n}"
                 }
             }
         },
@@ -165,7 +165,7 @@
                             "language": "json"
                         }
                     },
-                    "raw": "{\"rooms\":2, \"beds\":4, \"description\":\"Cabaña estilo americana con vista al lago\", \"price\": 1000, \"amenities\":\"cocina,baño,balcon,ducha\", \"urls_fotos\":[\"https://cf.bstatic.com/xdata/images/hotel/max1024x768/414428911.jpg?k=dd5c62092ece84129e41a11c4b572672a3bb5f4570d37102d3449d1505a151bf&o=&hp=1\"]}"
+                    "raw": "{\"rooms\":2, \"beds\":4, \"description\":\"Cabaña estilo americana con vista al lago\", \"price\": 1000, \"amenities\":\"cocina,baño,balcon,ducha\", \"urls_fotos\":\"[https://res.cloudinary.com/damlscz2d/image/upload/v1748197928/chirx7dc3jc962z7xzmm.jpg]\"}"
                 }
             }
         },
@@ -201,7 +201,7 @@
                             "language": "json"
                         }
                     },
-                    "raw": "{\"rooms\":2, \"beds\":4, \"description\":\"Cabaña estilo americana con vista al lago\", \"price\": 1000, \"amenities\":[\"Cocina completa\",\"toilet en suite\",\"Balcon\", \"Ducha escocesa\"], \"urls_fotos\":[\"https://cf.bstatic.com/xdata/images/hotel/max1024x768/414428911.jpg?k=dd5c62092ece84129e41a11c4b572672a3bb5f4570d37102d3449d1505a151bf&o=&hp=1\"],\"id\": 11}"
+                    "raw": "{\"rooms\":2, \"beds\":4, \"description\":\"Cabaña estilo americana con vista al lago\", \"price\": 1000, \"amenities\":[\"Cocina completa\",\"toilet en suite\",\"Balcon\", \"Ducha escocesa\"], \"urls_fotos\":[\"https://cf.bstatic.com/xdata/images/hotel/max1024x768/414428911.jpg?k=dd5c62092ece84129e41a11c4b572672a3bb5f4570d37102d3449d1505a151bf&o=&hp=1\"],\"id\": 10}"
                 }
             }
         },
@@ -237,7 +237,7 @@
                             "language": "json"
                         }
                     },
-                    "raw": "{\"id\": 13}"
+                    "raw": "{\"id\": 18}"
                 }
             }
         },
@@ -246,7 +246,14 @@
             "request": {
                 "method": "GET",
                 "url": {
-                    "raw": "http://localhost:5001/api/terceros/units",
+                    "raw": "http://localhost:5001/api/terceros/units?id=5",
+                    "query": [
+                        {
+                            "key": "id",
+                            "value": "5"
+                        }
+                    ],
+                    "variable": [],
                     "path": [
                         "api",
                         "terceros",
@@ -306,7 +313,7 @@
                             "language": "json"
                         }
                     },
-                    "raw": "{\n  \"rooms\": 2,\n  \"beds\": 4,\n  \"check_in_date\": \"2025-1-1\",\n  \"check_out_date\": \"2025-10-1\"\n}"
+                    "raw": "{\n  // \"rooms\": 2,\n  // \"beds\": 4,\n  \"check_in_date\": \"2025-1-1\",\n  \"check_out_date\": \"2025-10-1\"\n}"
                 }
             }
         },
@@ -332,7 +339,87 @@
                     },
                     {
                         "key": "Authorization",
-                        "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODE5MTQ5NiwianRpIjoiNjEyZmNjZGMtMTFlZi00MjhmLThjYWYtYTY1YWMzNDIxNDlhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiZ3VpbGxlcm1vLmZ1bGxzdGFja0BnbWFpbC5jb21cIn0iLCJuYmYiOjE3NDgxOTE0OTYsImNzcmYiOiJjODI4NTUyMS1iZDA1LTRmMDEtOWVlYi0yYjFlMGJhZjdiYjIiLCJleHAiOjE3NDgyNzc4OTZ9.9UuSRCRwQlYbycn9hlMxvn87g9M3weSSDDL0XnJ5Yy4"
+                        "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODQ2OTgwMSwianRpIjoiMGJhODgzZmMtNDM5Ny00OTNiLTkyZmItZmM0NGRiMGUwNGI4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiZ3VpbGxlcm1vLmZ1bGxzdGFja0BnbWFpbC5jb21cIn0iLCJuYmYiOjE3NDg0Njk4MDEsImNzcmYiOiIxOGYwY2M2OC0wOTQwLTQwMDUtYjRmYy1kMGVhM2UxNjhiMjQiLCJleHAiOjE3NTcxMDk4MDF9.nnCKkY4O4_SYhFSIWoFfPA4oUjNjd5TDHsJM6DF73E0"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Solicitar informes Copy",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "https://proyectoppvi.onrender.com//informes",
+                    "path": [
+                        "informes"
+                    ],
+                    "protocol": "https",
+                    "host": [
+                        "proyectoppvi",
+                        "onrender",
+                        "com"
+                    ]
+                },
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODQ2OTgwMSwianRpIjoiMGJhODgzZmMtNDM5Ny00OTNiLTkyZmItZmM0NGRiMGUwNGI4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiZ3VpbGxlcm1vLmZ1bGxzdGFja0BnbWFpbC5jb21cIn0iLCJuYmYiOjE3NDg0Njk4MDEsImNzcmYiOiIxOGYwY2M2OC0wOTQwLTQwMDUtYjRmYy1kMGVhM2UxNjhiMjQiLCJleHAiOjE3NTcxMDk4MDF9.nnCKkY4O4_SYhFSIWoFfPA4oUjNjd5TDHsJM6DF73E0"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "motor get",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:5001/motor",
+                    "path": [
+                        "motor"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5001"
+                },
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODQ2OTgwMSwianRpIjoiMGJhODgzZmMtNDM5Ny00OTNiLTkyZmItZmM0NGRiMGUwNGI4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiZ3VpbGxlcm1vLmZ1bGxzdGFja0BnbWFpbC5jb21cIn0iLCJuYmYiOjE3NDg0Njk4MDEsImNzcmYiOiIxOGYwY2M2OC0wOTQwLTQwMDUtYjRmYy1kMGVhM2UxNjhiMjQiLCJleHAiOjE3NTcxMDk4MDF9.nnCKkY4O4_SYhFSIWoFfPA4oUjNjd5TDHsJM6DF73E0"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Eliminar admin",
+            "request": {
+                "method": "DELETE",
+                "url": {
+                    "raw": "http://localhost:5001/deleteAdmin/1",
+                    "path": [
+                        "deleteAdmin",
+                        "1"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5001"
+                },
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "disabled": true
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODQ2OTgwMSwianRpIjoiMGJhODgzZmMtNDM5Ny00OTNiLTkyZmItZmM0NGRiMGUwNGI4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiZ3VpbGxlcm1vLmZ1bGxzdGFja0BnbWFpbC5jb21cIn0iLCJuYmYiOjE3NDg0Njk4MDEsImNzcmYiOiIxOGYwY2M2OC0wOTQwLTQwMDUtYjRmYy1kMGVhM2UxNjhiMjQiLCJleHAiOjE3NTcxMDk4MDF9.nnCKkY4O4_SYhFSIWoFfPA4oUjNjd5TDHsJM6DF73E0"
                     }
                 ]
             }

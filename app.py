@@ -111,6 +111,14 @@ def verAdmins():
         for admin in admins:
             admins_dict[admin[1]] = {"id":admin[0], "username": admin[1]}
         return jsonify(admins_dict)
+    
+@app.route("/deleteAdmin/<int:id>", methods = ['DELETE'])
+@jwt_required()
+def deleteAdmin(id:int):
+    if DB.deleteAdmin(id):
+        return jsonify({"message":"Administrador borrado con éxito"})
+    return jsonify({"message":"Administrador no encontrado"})
+    
 
 
 @app.route("/creaUnidad", methods = ['POST'])

@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "Pruebas de api/BDD",
     "collectionId": "ad89ea21-6d5e-416d-8f63-e7dc90024416",
-    "dateExported": "2025-05-25T18:10:44.870Z",
+    "dateExported": "2025-06-06T19:54:29.297Z",
     "version": "1.2",
     "folders": [],
     "requests": [
@@ -32,7 +32,7 @@
             "method": "POST",
             "sortNum": 30000,
             "created": "2025-05-24T23:48:19.319Z",
-            "modified": "2025-05-25T11:38:15.840Z",
+            "modified": "2025-05-25T20:03:50.504Z",
             "headers": [
                 {
                     "name": "Content-Type",
@@ -45,7 +45,7 @@
             ],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"username\": \"germangp622@gmail.com\",\n  \"password\": \"1234\",\n  \"superUser\": \"True\"\n}",
+                "raw": "{\n  \"username\": \"msoledadm88@gmail.com\",\n  \"password\": \"1234\",\n  \"superUser\": \"True\"\n}",
                 "form": []
             }
         },
@@ -105,7 +105,7 @@
             "method": "POST",
             "sortNum": 50000,
             "created": "2025-05-25T12:05:35.931Z",
-            "modified": "2025-05-25T16:33:57.207Z",
+            "modified": "2025-05-25T18:50:10.673Z",
             "headers": [
                 {
                     "name": "Content-Type",
@@ -118,7 +118,7 @@
             ],
             "body": {
                 "type": "json",
-                "raw": "{\"rooms\":2, \"beds\":4, \"description\":\"Cabaña estilo americana con vista al lago\", \"price\": 1000, \"amenities\":\"cocina,baño,balcon,ducha\", \"urls_fotos\":[\"https://cf.bstatic.com/xdata/images/hotel/max1024x768/414428911.jpg?k=dd5c62092ece84129e41a11c4b572672a3bb5f4570d37102d3449d1505a151bf&o=&hp=1\"]}",
+                "raw": "{\"rooms\":2, \"beds\":4, \"description\":\"Cabaña estilo americana con vista al lago\", \"price\": 1000, \"amenities\":\"cocina,baño,balcon,ducha\", \"urls_fotos\":\"[https://res.cloudinary.com/damlscz2d/image/upload/v1748197928/chirx7dc3jc962z7xzmm.jpg]\"}",
                 "form": []
             }
         },
@@ -131,7 +131,7 @@
             "method": "POST",
             "sortNum": 60000,
             "created": "2025-05-25T12:34:52.219Z",
-            "modified": "2025-05-25T12:40:54.100Z",
+            "modified": "2025-05-25T19:59:28.596Z",
             "headers": [
                 {
                     "name": "Content-Type",
@@ -144,7 +144,7 @@
             ],
             "body": {
                 "type": "json",
-                "raw": "{\"rooms\":2, \"beds\":4, \"description\":\"Cabaña estilo americana con vista al lago\", \"price\": 1000, \"amenities\":[\"Cocina completa\",\"toilet en suite\",\"Balcon\", \"Ducha escocesa\"], \"urls_fotos\":[\"https://cf.bstatic.com/xdata/images/hotel/max1024x768/414428911.jpg?k=dd5c62092ece84129e41a11c4b572672a3bb5f4570d37102d3449d1505a151bf&o=&hp=1\"],\"id\": 11}",
+                "raw": "{\"rooms\":2, \"beds\":4, \"description\":\"Cabaña estilo americana con vista al lago\", \"price\": 1000, \"amenities\":[\"Cocina completa\",\"toilet en suite\",\"Balcon\", \"Ducha escocesa\"], \"urls_fotos\":[\"https://cf.bstatic.com/xdata/images/hotel/max1024x768/414428911.jpg?k=dd5c62092ece84129e41a11c4b572672a3bb5f4570d37102d3449d1505a151bf&o=&hp=1\"],\"id\": 10}",
                 "form": []
             }
         },
@@ -157,7 +157,7 @@
             "method": "POST",
             "sortNum": 70000,
             "created": "2025-05-25T12:45:10.597Z",
-            "modified": "2025-05-25T12:46:33.195Z",
+            "modified": "2025-05-25T19:59:52.461Z",
             "headers": [
                 {
                     "name": "Content-Type",
@@ -170,7 +170,7 @@
             ],
             "body": {
                 "type": "json",
-                "raw": "{\"id\": 13}",
+                "raw": "{\"id\": 18}",
                 "form": []
             }
         },
@@ -179,11 +179,11 @@
             "colId": "ad89ea21-6d5e-416d-8f63-e7dc90024416",
             "containerId": "",
             "name": "consulta unidades get",
-            "url": "http://localhost:5001/api/terceros/units",
+            "url": "http://localhost:5001/api/terceros/units?id=5",
             "method": "GET",
             "sortNum": 80000,
             "created": "2025-05-25T12:47:24.925Z",
-            "modified": "2025-05-25T12:48:24.150Z",
+            "modified": "2025-05-25T20:40:38.359Z",
             "headers": [
                 {
                     "name": "Content-Type",
@@ -194,6 +194,13 @@
                     "name": "Authorization",
                     "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODEzMTA3MywianRpIjoiNmZjZDI1NGUtMjcwZS00YTVkLThjZDktNGM5NzJlNjBkOTlhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiYWRtaW4zXCJ9IiwibmJmIjoxNzQ4MTMxMDczLCJjc3JmIjoiYzgyY2NiYjUtYTBkYy00YzFhLWI2ZTMtZmU3NzcxYjgwMzE4IiwiZXhwIjoxNzQ4MjE3NDczfQ.rJfexgFNc0cdmes1tMw5CFiwq2j_1fQaYHz-7h2noYc",
                     "isDisabled": true
+                }
+            ],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "5",
+                    "isPath": false
                 }
             ]
         },
@@ -206,7 +213,7 @@
             "method": "POST",
             "sortNum": 90000,
             "created": "2025-05-25T12:48:42.703Z",
-            "modified": "2025-05-25T16:42:48.322Z",
+            "modified": "2025-05-27T20:22:56.646Z",
             "headers": [
                 {
                     "name": "Content-Type",
@@ -219,7 +226,7 @@
             ],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"rooms\": 2,\n  \"beds\": 4,\n  \"check_in_date\": \"2025-1-1\",\n  \"check_out_date\": \"2025-10-1\"\n}",
+                "raw": "{\n  // \"rooms\": 2,\n  // \"beds\": 4,\n  \"check_in_date\": \"2025-1-1\",\n  \"check_out_date\": \"2025-10-1\"\n}",
                 "form": []
             }
         },
@@ -232,7 +239,7 @@
             "method": "GET",
             "sortNum": 100000,
             "created": "2025-05-25T16:43:58.309Z",
-            "modified": "2025-05-25T16:47:05.370Z",
+            "modified": "2025-05-28T22:04:01.644Z",
             "headers": [
                 {
                     "name": "Content-Type",
@@ -240,10 +247,70 @@
                 },
                 {
                     "name": "Authorization",
-                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODE5MTQ5NiwianRpIjoiNjEyZmNjZGMtMTFlZi00MjhmLThjYWYtYTY1YWMzNDIxNDlhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiZ3VpbGxlcm1vLmZ1bGxzdGFja0BnbWFpbC5jb21cIn0iLCJuYmYiOjE3NDgxOTE0OTYsImNzcmYiOiJjODI4NTUyMS1iZDA1LTRmMDEtOWVlYi0yYjFlMGJhZjdiYjIiLCJleHAiOjE3NDgyNzc4OTZ9.9UuSRCRwQlYbycn9hlMxvn87g9M3weSSDDL0XnJ5Yy4"
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODQ2OTgwMSwianRpIjoiMGJhODgzZmMtNDM5Ny00OTNiLTkyZmItZmM0NGRiMGUwNGI4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiZ3VpbGxlcm1vLmZ1bGxzdGFja0BnbWFpbC5jb21cIn0iLCJuYmYiOjE3NDg0Njk4MDEsImNzcmYiOiIxOGYwY2M2OC0wOTQwLTQwMDUtYjRmYy1kMGVhM2UxNjhiMjQiLCJleHAiOjE3NTcxMDk4MDF9.nnCKkY4O4_SYhFSIWoFfPA4oUjNjd5TDHsJM6DF73E0"
+                }
+            ]
+        },
+        {
+            "_id": "4b1e604e-b584-435d-b40e-17165394e9f8",
+            "colId": "ad89ea21-6d5e-416d-8f63-e7dc90024416",
+            "containerId": "",
+            "name": "Solicitar informes Copy",
+            "url": "https://proyectoppvi.onrender.com//informes",
+            "method": "GET",
+            "sortNum": 110000,
+            "created": "2025-05-31T20:25:10.557Z",
+            "modified": "2025-05-31T20:29:49.957Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                },
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODQ2OTgwMSwianRpIjoiMGJhODgzZmMtNDM5Ny00OTNiLTkyZmItZmM0NGRiMGUwNGI4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiZ3VpbGxlcm1vLmZ1bGxzdGFja0BnbWFpbC5jb21cIn0iLCJuYmYiOjE3NDg0Njk4MDEsImNzcmYiOiIxOGYwY2M2OC0wOTQwLTQwMDUtYjRmYy1kMGVhM2UxNjhiMjQiLCJleHAiOjE3NTcxMDk4MDF9.nnCKkY4O4_SYhFSIWoFfPA4oUjNjd5TDHsJM6DF73E0"
+                }
+            ]
+        },
+        {
+            "_id": "aaed2084-baa6-4771-95d1-386a6a9655bd",
+            "colId": "ad89ea21-6d5e-416d-8f63-e7dc90024416",
+            "containerId": "",
+            "name": "motor get",
+            "url": "http://localhost:5001/motor",
+            "method": "GET",
+            "sortNum": 120000,
+            "created": "2025-06-05T19:46:57.972Z",
+            "modified": "2025-06-05T19:47:54.667Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODQ2OTgwMSwianRpIjoiMGJhODgzZmMtNDM5Ny00OTNiLTkyZmItZmM0NGRiMGUwNGI4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiZ3VpbGxlcm1vLmZ1bGxzdGFja0BnbWFpbC5jb21cIn0iLCJuYmYiOjE3NDg0Njk4MDEsImNzcmYiOiIxOGYwY2M2OC0wOTQwLTQwMDUtYjRmYy1kMGVhM2UxNjhiMjQiLCJleHAiOjE3NTcxMDk4MDF9.nnCKkY4O4_SYhFSIWoFfPA4oUjNjd5TDHsJM6DF73E0"
+                }
+            ]
+        },
+        {
+            "_id": "42ad1310-9ead-45f5-9b8c-957b8b74e95c",
+            "colId": "ad89ea21-6d5e-416d-8f63-e7dc90024416",
+            "containerId": "",
+            "name": "Eliminar admin",
+            "url": "http://localhost:5001/deleteAdmin/1",
+            "method": "DELETE",
+            "sortNum": 130000,
+            "created": "2025-06-06T19:50:08.828Z",
+            "modified": "2025-06-06T19:52:53.925Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "isDisabled": true
+                },
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODQ2OTgwMSwianRpIjoiMGJhODgzZmMtNDM5Ny00OTNiLTkyZmItZmM0NGRiMGUwNGI4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiZ3VpbGxlcm1vLmZ1bGxzdGFja0BnbWFpbC5jb21cIn0iLCJuYmYiOjE3NDg0Njk4MDEsImNzcmYiOiIxOGYwY2M2OC0wOTQwLTQwMDUtYjRmYy1kMGVhM2UxNjhiMjQiLCJleHAiOjE3NTcxMDk4MDF9.nnCKkY4O4_SYhFSIWoFfPA4oUjNjd5TDHsJM6DF73E0"
                 }
             ]
         }
     ],
-    "ref": "XdqyDVZGazT3JmFtBBlLt7PnHJBPTZG0qlizRsThpPpxHjoGVrcyDjMNuKpjgVuI9HelvrGPbg8RLLzX8fbPqw"
+    "ref": "XdqyDVZGazT3JmFtBBlLt_vzMR6HvJCLJb-MpsESJTI-mziuEF9RvjJs51KVlGSLDVhkuVnlGa54BV1qOtzEog"
 }
