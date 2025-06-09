@@ -144,6 +144,16 @@ class ControllerDB:
         conn.commit()
         conn.close()
         return deleted
+    
+    def modifyPassAdmin(self,username,password):
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        query = "UPDATE admin SET password = %s WHERE username = %s"
+        modified = cursor.execute(query,(hashear(password),username)) > 0
+        conn.commit()
+        conn.close()
+        return modified
+
 
     def auxVerAdmins(self):
         conn = self.mysql.connect()

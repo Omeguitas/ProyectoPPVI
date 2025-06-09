@@ -40,10 +40,3 @@ class Unit:
         return multipler
 
 
-""""
-pi*Ocupacion*temporada
-PI * (o+t)
-
-10 * 2 * 0.3 =60
-10 *(2+3) =50
-"""

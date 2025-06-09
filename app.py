@@ -5,6 +5,7 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required, ge
 from flask_cors import CORS
 from flaskext.mysql import MySQL
 from flask_mail import Mail, Message
+from itsdangerous import URLSafeTimedSerializer 
 from controllerDB import ControllerDB
 from dotenv import load_dotenv
 from datetime import datetime as dt, timedelta
@@ -42,7 +43,7 @@ db = MySQL()
 db.init_app(app) # Inicialización de SQL
 DB = ControllerDB(db)
 jtw =  JWTManager(app)
-CORS(app, origins=[os.getenv("URL_FRONT")])
+CORS(app, origins=[os.getenv("URL_FRONT")+"/*"])
 CORS(app, resources={r"/api/terceros/*": {"origins": ["*"]}})
 
 @app.route("/")
@@ -119,6 +120,37 @@ def deleteAdmin(id:int):
         return jsonify({"message":"Administrador borrado con éxito"})
     return jsonify({"message":"Administrador no encontrado"})
     
+@app.route("/editPass", methods = ['POST'])
+@jwt_required()
+def editPass():
+    userIdentity = json.loads(get_jwt_identity())
+    email = userIdentity.get("username",False)
+    password = request.get_json().get("password")
+    if DB.modifyPassAdmin(email, password):
+        return jsonify({"message":"Contraseña modificada con éxito"})
+    return jsonify({"message":"Administrador no encontrado"})
+
+@app.route("/recoveryPass", methods = ['GET','POST'])
+def recoveryPass():
+    serializer = URLSafeTimedSerializer(os.getenv('SECRET_KEY'))
+    salt = 'password-reset-salt'
+    if request.method == 'GET':
+        username = request.args.get("username")
+        admin = Admin(DB, username,"","")
+        if DB.searchAdmin(admin):
+            token = serializer.dumps(username, salt)
+            resetLink = f"{os.getenv("URL_FRONT")}/recoveryPass?token={token}"
+            print(resetLink)
+            return jsonify(reports.sendMail(app,username,"Siga el siguiente link para reestablecer su contraseña",[],f'<a href="{resetLink}">Click aquí</a>'))
+        return jsonify({"message":"Si el usuario existe, se enviara un correo electrónico con el link de recuperación."})
+    elif request.method == 'POST':
+        data = request.get_json()
+        token = data.get('token')
+        password = data.get('password')
+        email = serializer.loads(token,salt=salt,max_age=3600)
+        if DB.modifyPassAdmin(email, password):
+            return jsonify({"message":"Contraseña modificada con éxito"})
+        return jsonify({"message":"Administrador no encontrado"})
 
 
 @app.route("/creaUnidad", methods = ['POST'])

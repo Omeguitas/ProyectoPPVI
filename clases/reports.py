@@ -15,14 +15,14 @@ from dotenv import load_dotenv
 
 load_dotenv() 
 
-def sendMail(app, recipient, message:str,files:list):
+def sendMail(app, recipient, message:str,files:list, html:str=""):
     sender=app.config['MAIL_DEFAULT_SENDER']
     msg = Message(message,
         sender=sender,
         recipients=[recipient]
     )
     msg.body = message
-    msg.html = ("")
+    msg.html = (html)
     for file in files:
         msg.attach(file[0],file[1],file[2])
 
@@ -38,9 +38,9 @@ def sendMail(app, recipient, message:str,files:list):
         server.docmd("AUTH", "XOAUTH2 " + auth_string)
         server.sendmail(sender, recipient, msg.as_string().encode('utf-8'))
         server.quit()
-        return '{"message":"Correo electrónico enviado con éxito."}'
+        return {"message":"Correo electrónico enviado con éxito."}
     except Exception as e:
-        return f'{{"message":"Error al enviar el correo electrónico: {e}"}}' 
+        return {"message":"Error al enviar el correo electrónico: {e}"}
 
 
 def sendReports(app, recipient,DB):

@@ -1,10 +1,6 @@
 {
     "info": {
-<<<<<<< HEAD
-        "_postman_id": "ba32dfb8-35c4-4759-8401-d3b63bed5f19",
-=======
-        "_postman_id": "0d6503de-5d62-473d-8db1-48dd8f905654",
->>>>>>> eliminarAdmin
+        "_postman_id": "15828dfe-286c-4c4c-8aa5-6ffb9d296a41",
         "name": "Pruebas de api/BDD",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         "description": ""
@@ -32,7 +28,7 @@
                             "language": "json"
                         }
                     },
-                    "raw": "{\n  \"username\": \"guillermo.fullstack@gmail.com\",\n  \"password\": \"18980413Guille\"\n}"
+                    "raw": "{\n  \"username\": \"guillermo.fullstack@gmail.com\",\n  \"password\": \"1234\"\n}"
                 }
             }
         },
@@ -349,34 +345,6 @@
             }
         },
         {
-            "name": "Solicitar informes Copy",
-            "request": {
-                "method": "GET",
-                "url": {
-                    "raw": "https://proyectoppvi.onrender.com//informes",
-                    "path": [
-                        "informes"
-                    ],
-                    "protocol": "https",
-                    "host": [
-                        "proyectoppvi",
-                        "onrender",
-                        "com"
-                    ]
-                },
-                "header": [
-                    {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                    },
-                    {
-                        "key": "Authorization",
-                        "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODQ2OTgwMSwianRpIjoiMGJhODgzZmMtNDM5Ny00OTNiLTkyZmItZmM0NGRiMGUwNGI4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiZ3VpbGxlcm1vLmZ1bGxzdGFja0BnbWFpbC5jb21cIn0iLCJuYmYiOjE3NDg0Njk4MDEsImNzcmYiOiIxOGYwY2M2OC0wOTQwLTQwMDUtYjRmYy1kMGVhM2UxNjhiMjQiLCJleHAiOjE3NTcxMDk4MDF9.nnCKkY4O4_SYhFSIWoFfPA4oUjNjd5TDHsJM6DF73E0"
-                    }
-                ]
-            }
-        },
-        {
             "name": "motor get",
             "request": {
                 "method": "GET",
@@ -395,8 +363,6 @@
                     {
                         "key": "Authorization",
                         "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODQ2OTgwMSwianRpIjoiMGJhODgzZmMtNDM5Ny00OTNiLTkyZmItZmM0NGRiMGUwNGI4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiZ3VpbGxlcm1vLmZ1bGxzdGFja0BnbWFpbC5jb21cIn0iLCJuYmYiOjE3NDg0Njk4MDEsImNzcmYiOiIxOGYwY2M2OC0wOTQwLTQwMDUtYjRmYy1kMGVhM2UxNjhiMjQiLCJleHAiOjE3NTcxMDk4MDF9.nnCKkY4O4_SYhFSIWoFfPA4oUjNjd5TDHsJM6DF73E0"
-<<<<<<< HEAD
-=======
                     }
                 ]
             }
@@ -426,9 +392,100 @@
                     {
                         "key": "Authorization",
                         "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODQ2OTgwMSwianRpIjoiMGJhODgzZmMtNDM5Ny00OTNiLTkyZmItZmM0NGRiMGUwNGI4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiZ3VpbGxlcm1vLmZ1bGxzdGFja0BnbWFpbC5jb21cIn0iLCJuYmYiOjE3NDg0Njk4MDEsImNzcmYiOiIxOGYwY2M2OC0wOTQwLTQwMDUtYjRmYy1kMGVhM2UxNjhiMjQiLCJleHAiOjE3NTcxMDk4MDF9.nnCKkY4O4_SYhFSIWoFfPA4oUjNjd5TDHsJM6DF73E0"
->>>>>>> eliminarAdmin
                     }
                 ]
+            }
+        },
+        {
+            "name": "editar contraseña",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:5001/editPass",
+                    "path": [
+                        "editPass"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5001"
+                },
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0ODQ2OTgwMSwianRpIjoiMGJhODgzZmMtNDM5Ny00OTNiLTkyZmItZmM0NGRiMGUwNGI4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IntcInN1cGVyVXNlclwiOiAxLCBcInVzZXJuYW1lXCI6IFwiZ3VpbGxlcm1vLmZ1bGxzdGFja0BnbWFpbC5jb21cIn0iLCJuYmYiOjE3NDg0Njk4MDEsImNzcmYiOiIxOGYwY2M2OC0wOTQwLTQwMDUtYjRmYy1kMGVhM2UxNjhiMjQiLCJleHAiOjE3NTcxMDk4MDF9.nnCKkY4O4_SYhFSIWoFfPA4oUjNjd5TDHsJM6DF73E0"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"password\": \"1234\"\n}"
+                }
+            }
+        },
+        {
+            "name": "recuperar contraseña get",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:5001/recoveryPass?username=guillermo.fullstack@gmail.com",
+                    "query": [
+                        {
+                            "key": "username",
+                            "value": "guillermo.fullstack@gmail.com"
+                        }
+                    ],
+                    "variable": [],
+                    "path": [
+                        "recoveryPass"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5001"
+                }
+            }
+        },
+        {
+            "name": "recuperar contraseña post",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:5001/recoveryPass",
+                    "path": [
+                        "recoveryPass"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5001"
+                },
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"token\":\"Imd1aWxsZXJtby5mdWxsc3RhY2tAZ21haWwuY29tIg.aEXgQQ.UatG5kO-j1G4Pm_CYmXHz74tsko\",\n  \"password\":\"1234\"\n}"
+                }
             }
         }
     ]
