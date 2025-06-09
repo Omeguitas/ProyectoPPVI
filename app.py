@@ -139,7 +139,8 @@ def recoveryPass():
         admin = Admin(DB, username,"","")
         if DB.searchAdmin(admin):
             token = serializer.dumps(username, salt)
-            resetLink = f"{os.getenv("URL_FRONT")}/recoveryPass?token={token}"
+            urlFront = os.getenv("URL_FRONT")
+            resetLink = f"{urlFront}/recoveryPass?token={token}"
             print(resetLink)
             return jsonify(reports.sendMail(app,username,"Siga el siguiente link para reestablecer su contraseña",[],f'<a href="{resetLink}">Click aquí</a>'))
         return jsonify({"message":"Si el usuario existe, se enviara un correo electrónico con el link de recuperación."})
