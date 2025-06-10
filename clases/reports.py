@@ -43,7 +43,7 @@ def sendMail(app, recipient, message:str,files:list, html:str=""):
         return {"message":"Error al enviar el correo electrónico: {e}"}
 
 
-def sendReports(app, recipient,DB):
+def sendReports(app, recipient,DB,html):
     files = []
     bufferIncomeReports = generateIncomeReports(DB)
     bufferoccupationReport = generateOcupationReport(DB)
@@ -55,7 +55,7 @@ def sendReports(app, recipient,DB):
         bufferIncomeReports.seek(0)
         files.append(("ingresos_mensuales.png", "image/png", bufferIncomeReports.read()))
     message = "Adjunto encontrarás los informes de ingresos y ocupación en formato de imagen."
-    respuesta = sendMail(app, recipient, message,files)
+    respuesta = sendMail(app, recipient, message,files,html=html)
     return respuesta
     
 

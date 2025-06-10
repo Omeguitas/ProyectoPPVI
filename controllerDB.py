@@ -282,3 +282,6 @@ class ControllerDB:
     #     data = cursor.fetchall()
     #     conn.close()
     #     return data
+
+    # url primera foto, title de tabla unit
+    # 

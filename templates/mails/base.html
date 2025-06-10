@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block document %}
+        {% endblock %}
+    </title>
+    
+</head>
+<body style="font-family: sans-serif;">
+    <div style="border: 1px solid grey; border-radius: 5px; text-align: center; padding: 40px;">
+        <img src="https://res.cloudinary.com/damlscz2d/image/upload/v1749496184/logo_qr82ut.png" alt="Logo Omeguitas", width="120">
+        <h1>
+            {% block title %}
+            {% endblock %}
+        </h1>
+        <hr>
+        <div>
+            {% block body %}
+            {% endblock %}
+        </div>
+    </div>
+</body>
+</html>

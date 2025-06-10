@@ -1,0 +1,12 @@
+{% extends "mails/base.html" %}
+
+{% block document %} Recuperación de contraseña {% endblock %}
+
+{% block title %}
+Check in
+{% endblock %}
+
+{% block body %}
+<p>Haz click en el siguiente enlace para realizar tu check-in</p>
+<a href="{{link}}">Click aquí</a>
+{% endblock %}

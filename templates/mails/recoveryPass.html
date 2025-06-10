@@ -1,0 +1,13 @@
+{% extends "mails/base.html" %}
+
+{% block document %} Recuperación de contraseña {% endblock %}
+
+{% block title %}
+Mail de recuperación de contraseña
+{% endblock %}
+
+{% block body %}
+<p>Haz click en el siguiente enlace para ser redirigido al formulario de recuperacion de contraseña.</p>
+<a href="{{link}}">Click aquí</a>
+<p>El link expirará dentro de 15 minutos.</p>
+{% endblock %}

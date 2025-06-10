@@ -1,6 +1,6 @@
 import os
 import json
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
 from flaskext.mysql import MySQL
@@ -50,7 +50,7 @@ CORS(app, resources={r"/api/terceros/*": {"origins": ["*"]}})
 def index():
     with open('resources/info_routes.json', 'r') as f:
         data = json.load(f)  # Cargar el JSON del archivo
-    return jsonify(data)
+    return jsonify(data), 200
 
 
 
@@ -111,14 +111,14 @@ def verAdmins():
         admins_dict = {}
         for admin in admins:
             admins_dict[admin[1]] = {"id":admin[0], "username": admin[1]}
-        return jsonify(admins_dict)
+        return jsonify(admins_dict), 200
     
 @app.route("/deleteAdmin/<int:id>", methods = ['DELETE'])
 @jwt_required()
 def deleteAdmin(id:int):
     if DB.deleteAdmin(id):
-        return jsonify({"message":"Administrador borrado con éxito"})
-    return jsonify({"message":"Administrador no encontrado"})
+        return jsonify({"message":"Administrador borrado con éxito"}), 200
+    return jsonify({"message":"Administrador no encontrado"}), 400
     
 @app.route("/editPass", methods = ['POST'])
 @jwt_required()
@@ -127,8 +127,8 @@ def editPass():
     email = userIdentity.get("username",False)
     password = request.get_json().get("password")
     if DB.modifyPassAdmin(email, password):
-        return jsonify({"message":"Contraseña modificada con éxito"})
-    return jsonify({"message":"Administrador no encontrado"})
+        return jsonify({"message":"Contraseña modificada con éxito"}), 200
+    return jsonify({"message":"Administrador no encontrado"}), 
 
 @app.route("/recoveryPass", methods = ['GET','POST'])
 def recoveryPass():
@@ -141,17 +141,19 @@ def recoveryPass():
             token = serializer.dumps(username, salt)
             urlFront = os.getenv("URL_FRONT")
             resetLink = f"{urlFront}/recoveryPass?token={token}"
-            print(resetLink)
-            return jsonify(reports.sendMail(app,username,"Siga el siguiente link para reestablecer su contraseña",[],f'<a href="{resetLink}">Click aquí</a>'))
-        return jsonify({"message":"Si el usuario existe, se enviara un correo electrónico con el link de recuperación."})
+            return jsonify(reports.sendMail(app,username,"Siga el siguiente link para reestablecer su contraseña",[],render_template("/mails/recoveryPass.html", link=resetLink)))
+        return jsonify({"message":"Si el usuario existe, se enviará un correo electrónico con el link de recuperación."})
     elif request.method == 'POST':
         data = request.get_json()
         token = data.get('token')
         password = data.get('password')
-        email = serializer.loads(token,salt=salt,max_age=3600)
-        if DB.modifyPassAdmin(email, password):
-            return jsonify({"message":"Contraseña modificada con éxito"})
-        return jsonify({"message":"Administrador no encontrado"})
+        try:
+            email = serializer.loads(token,salt=salt,max_age=900)
+            print(email)
+            if password and email and DB.modifyPassAdmin(email, password):
+                return jsonify({"message":"Contraseña modificada con éxito"}), 200
+        except:
+            return jsonify({"message":"Administrador no encontrado"}), 400
 
 
 @app.route("/creaUnidad", methods = ['POST'])
@@ -194,6 +196,8 @@ def units():
         multipler = Unit.calculateMultipler(check_in_date, check_out_date, DB)
         for unit in units:
             unit["price"] = round(float(unit["price"]) * multipler)
+            dataToken = f'{{"id": {unit['id']}, "price": {unit['price']}}}'
+            unit["token"] = create_access_token(identity=dataToken,expires_delta=timedelta(hours=5))
         return jsonify(units)
 
 
@@ -203,21 +207,31 @@ def generateReports():
     message = {}
     recipient = json.loads(get_jwt_identity()).get("username")
     # recipient = "guillermo.fullstack@gmail.com"
-    message = reports.sendReports(app, recipient, DB)
+    message = reports.sendReports(app, recipient, DB, render_template("/mails/informes.html"))
     # for recipient in ["guillermo.fullstack@gmail.com","carol.ceron801@gmail.com","germangp62@gmail.com","msoledadm88@gmail.com"]:
     #     message[recipient] = reports.sendReports(app, mail,recipient,DB)
     return message
 
 
 @app.route("/api/terceros/almacenaReserva", methods = ['POST'])
+@jwt_required()
 def saveReservation():
-    data = request.get_json()
-    dataGuest = data.get("guest")
-    guest = Guest(dataGuest.get("name"), dataGuest.get("mail"),dataGuest.get("phone"),DB)
-    guestId = guest.save()
-    reservation = Reservation(data.get("unit_id"), guestId, dt.strptime(data.get("check_in_date"),"%Y-%m-%d"), dt.strptime(data.get("check_out_date"),"%Y-%m-%d"), data.get("price"), data.get("amount_paid"), DB)
-    return reservation.save()
-      
+    try:
+        data_token = json.loads(get_jwt_identity())
+        unit_id = data_token.get("id")
+        unit_price = data_token.get("price")
+        data = request.get_json()
+        dataGuest = data.get("guest")
+        if unit_id == data.get("unit_id"):
+            guest = Guest(dataGuest.get("name"), dataGuest.get("mail"),dataGuest.get("phone"),DB)
+            guestId = guest.save()
+            reservation = Reservation(unit_id, guestId, dt.strptime(data.get("check_in_date"),"%Y-%m-%d"), dt.strptime(data.get("check_out_date"),"%Y-%m-%d"), unit_price, data.get("amount_paid"), DB)
+            return jsonify(reservation.save())
+        else:
+            return jsonify({"message":"error en el token, reserva no almacenada"})
+    except json.JSONDecodeError:
+        return jsonify(message="Error: La identidad del token no es un JSON válido."), 400
+        
 
 @app.route("/motor", methods = ['POST','GET'])
 @jwt_required()
@@ -228,7 +242,9 @@ def datos_multiplicador():
         return jsonify({"message": "Se han creado {count} periodos correctamente."})
     return jsonify(DB.getSeasonRates()), 200
 
-
+@app.route("/recovery")
+def reco():
+    return render_template("/mails/recoveryPass.html", link="https://google.com")
 
 if __name__ == "__main__":
      app.run(debug=True, host="localhost", port=5001)
