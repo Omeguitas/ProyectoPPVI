@@ -196,7 +196,9 @@ def units():
         multipler = Unit.calculateMultipler(check_in_date, check_out_date, DB)
         for unit in units:
             unit["price"] = round(float(unit["price"]) * multipler)
-            dataToken = f'{{"id": {unit['id']}, "price": {unit['price']}}}'
+            unit_id = unit['id']
+            unit_price = unit['price']
+            dataToken = f'{{"id": {unit_id}, "price": {unit_price}}}'
             unit["token"] = create_access_token(identity=dataToken,expires_delta=timedelta(hours=5))
         return jsonify(units)
 
