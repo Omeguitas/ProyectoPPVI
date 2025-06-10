@@ -73,7 +73,6 @@ def login():
     admin = Admin(DB, username, password)
     admin.authenticate()
     if admin.authenticated:
-        a = 1.0
         #  Incluye información del usuario que necesites en la identidad del token
         userIdentity = f'{{"superUser": {json.dumps(admin.superUser)}, "username": {json.dumps(admin.username)}}}'
         accessToken = create_access_token(identity=userIdentity,expires_delta=timedelta(1))  # Crea el token
@@ -98,8 +97,8 @@ def crearAdmin():
             return jsonify({"error": "Faltan username o password"}), 400
         newAdmin = Admin(DB, username, password, superUser)
         mensaje = newAdmin.save()
-        return jsonify({"mensaje": mensaje}), 200
-    return jsonify({"error":"Administrador sin permisos."})
+        return jsonify({"mensaje": mensaje}), 201
+    return jsonify({"error":"Administrador sin permisos necesarios."}), 403
 
 
 @app.route("/verAdmins")
@@ -112,13 +111,18 @@ def verAdmins():
         for admin in admins:
             admins_dict[admin[1]] = {"id":admin[0], "username": admin[1]}
         return jsonify(admins_dict), 200
+    return jsonify({"error":"Administrador sin permisos necesarios."}), 403
+    
     
 @app.route("/deleteAdmin/<int:id>", methods = ['DELETE'])
 @jwt_required()
 def deleteAdmin(id:int):
-    if DB.deleteAdmin(id):
-        return jsonify({"message":"Administrador borrado con éxito"}), 200
-    return jsonify({"message":"Administrador no encontrado"}), 400
+    userIdentity = json.loads(get_jwt_identity())
+    if userIdentity.get("superUser",False):
+        if DB.deleteAdmin(id):
+            return jsonify({"message":"Administrador borrado con éxito"}), 200
+        return jsonify({"message":"Administrador no encontrado"}), 404
+    return jsonify({"error":"Administrador sin permisos necesarios."}), 403
     
 @app.route("/editPass", methods = ['POST'])
 @jwt_required()
@@ -128,7 +132,7 @@ def editPass():
     password = request.get_json().get("password")
     if DB.modifyPassAdmin(email, password):
         return jsonify({"message":"Contraseña modificada con éxito"}), 200
-    return jsonify({"message":"Administrador no encontrado"}), 
+    return jsonify({"message":"Administrador no encontrado"}), 404
 
 @app.route("/recoveryPass", methods = ['GET','POST'])
 def recoveryPass():
@@ -141,19 +145,19 @@ def recoveryPass():
             token = serializer.dumps(username, salt)
             urlFront = os.getenv("URL_FRONT")
             resetLink = f"{urlFront}/recoveryPass?token={token}"
-            return jsonify(reports.sendMail(app,username,"Siga el siguiente link para reestablecer su contraseña",[],render_template("/mails/recoveryPass.html", link=resetLink)))
-        return jsonify({"message":"Si el usuario existe, se enviará un correo electrónico con el link de recuperación."})
+            response, code = reports.sendMail(app,username,"Siga el siguiente link para reestablecer su contraseña",[],render_template("/mails/recoveryPass.html", link=resetLink))
+            return jsonify(response), code
+        return jsonify({"message":"Si el usuario existe, se enviará un correo electrónico con el link de recuperación."}), 200
     elif request.method == 'POST':
         data = request.get_json()
         token = data.get('token')
         password = data.get('password')
         try:
             email = serializer.loads(token,salt=salt,max_age=900)
-            print(email)
             if password and email and DB.modifyPassAdmin(email, password):
                 return jsonify({"message":"Contraseña modificada con éxito"}), 200
         except:
-            return jsonify({"message":"Administrador no encontrado"}), 400
+            return jsonify({"message":"Administrador no encontrado"}), 404
 
 
 @app.route("/creaUnidad", methods = ['POST'])
@@ -162,7 +166,8 @@ def createUnit():
     data = request.get_json()
     unit = Unit(data.get("rooms", False), data.get("beds", False), data.get("description", False), data.get("price", False), data.get("amenities", False), data.get("urls_fotos", False), DB, data.get("title", ""),data.get("bathrooms", 0),data.get("address", ""))
     result = unit.save()
-    return jsonify(result)
+    return jsonify(result), 201
+    # TODO respuesta en caso de fallo
 
 @app.route("/editarUnidad", methods = ['POST'])
 @jwt_required()
@@ -170,25 +175,32 @@ def editUnit():
     data = request.get_json()
     unit = Unit(data.get("rooms", False), data.get("beds", False), data.get("description", False), data.get("price", False), data.get("amenities", False), data.get("urls_fotos", False), DB, data.get("title", ""),data.get("bathrooms", 0),data.get("address", ""), data.get("id"))
     result = unit.edit()
-    return jsonify(result)
+    return jsonify(result), 200
+    # TODO respuesta en caso de fallo
 
 
 @app.route("/eliminarUnidad", methods = ['POST'])
 @jwt_required()
 def deleteUnit():
     id = request.get_json().get("id",None)
-    message = "{'message' : 'Parametro id no encontrado'}"
+    message, code = {'message' : 'Parametro id no encontrado'}, 404
     if id:
-        message = DB.deleteUnit(id)
-    return message
+        message, code = DB.deleteUnit(id)
+    return jsonify(message), code
 
 @app.route("/api/terceros/units/", methods=["GET", "POST"])
 def units():
     id = request.args.get('id')
     if request.method == "GET":
         if id:
-            return jsonify(DB.searchUnits({"id":id}))
-        return jsonify(DB.searchUnits())
+            lista = jsonify(DB.searchUnits({"id":id}))
+        else:
+            lista = jsonify(DB.searchUnits()) 
+        if lista:
+            code = 200
+        else:
+            code = 404
+        return lista, code
     elif request.method == "POST":
         criteria = request.get_json()
         check_in_date, check_out_date = dt.strptime(criteria["check_in_date"],"%Y-%m-%d").date() , dt.strptime(criteria["check_out_date"],"%Y-%m-%d").date()
@@ -200,7 +212,11 @@ def units():
             unit_price = unit['price']
             dataToken = f'{{"id": {unit_id}, "price": {unit_price}}}'
             unit["token"] = create_access_token(identity=dataToken,expires_delta=timedelta(hours=5))
-        return jsonify(units)
+        if units:
+            code = 200
+        else:
+            code = 404
+        return jsonify(units), code
 
 
 @app.route("/informes")
@@ -209,10 +225,10 @@ def generateReports():
     message = {}
     recipient = json.loads(get_jwt_identity()).get("username")
     # recipient = "guillermo.fullstack@gmail.com"
-    message = reports.sendReports(app, recipient, DB, render_template("/mails/informes.html"))
+    message, code = reports.sendReports(app, recipient, DB, render_template("/mails/informes.html"))
     # for recipient in ["guillermo.fullstack@gmail.com","carol.ceron801@gmail.com","germangp62@gmail.com","msoledadm88@gmail.com"]:
     #     message[recipient] = reports.sendReports(app, mail,recipient,DB)
-    return message
+    return jsonify(message), code
 
 
 @app.route("/api/terceros/almacenaReserva", methods = ['POST'])
@@ -228,11 +244,11 @@ def saveReservation():
             guest = Guest(dataGuest.get("name"), dataGuest.get("mail"),dataGuest.get("phone"),DB)
             guestId = guest.save()
             reservation = Reservation(unit_id, guestId, dt.strptime(data.get("check_in_date"),"%Y-%m-%d"), dt.strptime(data.get("check_out_date"),"%Y-%m-%d"), unit_price, data.get("amount_paid"), DB)
-            return jsonify(reservation.save())
+            return jsonify(reservation.save()), 201
         else:
-            return jsonify({"message":"error en el token, reserva no almacenada"})
+            return jsonify({"message":"error en el token, reserva no almacenada"}), 403
     except json.JSONDecodeError:
-        return jsonify(message="Error: La identidad del token no es un JSON válido."), 400
+        return jsonify({"message":"Error: La identidad del token no es un JSON válido."}), 400
         
 
 @app.route("/motor", methods = ['POST','GET'])
@@ -241,12 +257,22 @@ def datos_multiplicador():
     if request.method == "POST":
         data = request.get_json()
         count = DB.setSeasonRates(data)
-        return jsonify({"message": "Se han creado {count} periodos correctamente."})
-    return jsonify(DB.getSeasonRates()), 200
+        return jsonify({"message": "Se han creado {count} periodos correctamente."}), 201
+    lista = DB.getSeasonRates()
+    if lista:
+        code = 200
+    else:
+        code = 404 
+    return jsonify(lista), code
 
 @app.route("/verReservas")
 def getReservations():
-    return jsonify(DB.getDataReservation())
+    lista = DB.getDataReservation()
+    if lista:
+        code = 200
+    else:
+        code = 404 
+    return jsonify(lista), code
     
 
 if __name__ == "__main__":
