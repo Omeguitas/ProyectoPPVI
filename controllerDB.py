@@ -274,14 +274,41 @@ class ControllerDB:
         return count
 
 
-    # def getSeasonRates(self):
-    #     conn = self.mysql.connect()
-    #     cursor = conn.cursor()
-    #     query = """SELECT * FROM season_rates"""
-    #     cursor.execute(query)
-    #     data = cursor.fetchall()
-    #     conn.close()
-    #     return data
+    def getDataReservation(self):
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        query = """SELECT r.check_in_date as Ingreso,
+        r.check_out_date as Salida,
+        r.price as Total,
+        r.amount_paid as Pagado,
+        r.checked_in,
+        r.unit_id,
+        u.urls_fotos as Foto,
+        u.title as Unidad,
+        g.name,
+        g.email
+        FROM reservation r
+        JOIN unit u ON r.unit_id = u.id
+        JOIN guest g ON r.guest_id = g.id
+        WHERE r.check_out_date >= %s
+        ORDER BY Ingreso"""
+        data = datetime.today().date()
+        cursor.execute(query,(data))
+        reservations = cursor.fetchall()
+        conn.close()
+        columns_name = [description[0] for description in cursor.description]
+        dicc_list_current = []
+        dicc_list_future = []
+        for reservation in reservations:
+            dicc = dict(zip(columns_name,reservation))
+            dicc["Foto"] = dicc["Foto"].split(",")[0]
+            dicc["Ingreso"] = datetime.strftime(dicc["Ingreso"],"%Y-%m-%d")
+            dicc["Salida"] = datetime.strftime(dicc["Salida"],"%Y-%m-%d")
+            if reservation[0] <= data:
+                dicc_list_current.append(dicc)
+            else:
+                dicc_list_future.append(dicc)
+        return {"current":dicc_list_current, "future": dicc_list_future}
 
     # url primera foto, title de tabla unit
     # 

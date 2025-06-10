@@ -242,9 +242,10 @@ def datos_multiplicador():
         return jsonify({"message": "Se han creado {count} periodos correctamente."})
     return jsonify(DB.getSeasonRates()), 200
 
-@app.route("/recovery")
-def reco():
-    return render_template("/mails/recoveryPass.html", link="https://google.com")
+@app.route("/verReservas")
+def getReservations():
+    return jsonify(DB.getDataReservation())
+    
 
 if __name__ == "__main__":
      app.run(debug=True, host="localhost", port=5001)
