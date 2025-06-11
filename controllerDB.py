@@ -99,9 +99,9 @@ class ControllerDB:
         conn.commit()
         message = ""
         if cursor.rowcount:
-            message = "{'message':'Unidad eliminada con exito'}"
+            message = {'message':'Unidad eliminada con exito'}, 200
         else:
-            message = "{'message':'Unidad no encontrada'}"
+            message = {'message':'Unidad no encontrada'}, 404
         cursor.close()
         conn.close()
         return message

@@ -38,9 +38,9 @@ def sendMail(app, recipient, message:str,files:list, html:str=""):
         server.docmd("AUTH", "XOAUTH2 " + auth_string)
         server.sendmail(sender, recipient, msg.as_string().encode('utf-8'))
         server.quit()
-        return {"message":"Correo electrónico enviado con éxito."}
+        return {"message":"Correo electrónico enviado con éxito."},200
     except Exception as e:
-        return {"message":"Error al enviar el correo electrónico: {e}"}
+        return {"message":"Error al enviar el correo electrónico: {e}"},408
 
 
 def sendReports(app, recipient,DB,html):
