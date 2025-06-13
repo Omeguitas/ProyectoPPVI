@@ -43,7 +43,7 @@ db = MySQL()
 db.init_app(app) # Inicialización de SQL
 DB = ControllerDB(db)
 jtw =  JWTManager(app)
-CORS(app, origins=[os.getenv("URL_FRONT")+"/*"])
+CORS(app, origins=[os.getenv("URL_FRONT")+"/*","*"])
 CORS(app, resources={r"/api/terceros/*": {"origins": ["*"]}})
 
 @app.route("/")
