@@ -108,7 +108,7 @@ def verAdmins():
         admins = DB.auxVerAdmins()
         admins_dict = {}
         for admin in admins:
-            admins_dict[admin[1]] = {"id":admin[0], "username": admin[1]}
+            admins_dict[admin[1]] = {"id":admin[0], "username": admin[1],"superUser": admin[3]}
         return jsonify(admins_dict), 200
     return jsonify({"error":"Administrador sin permisos necesarios."}), 403
     
