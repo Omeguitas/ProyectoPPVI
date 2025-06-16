@@ -14,6 +14,7 @@ from clases.unit import Unit
 from clases import reports
 from clases.guest import Guest
 from clases.reservation import Reservation
+from clases.reports import sendMail
 
 
 load_dotenv()
@@ -272,7 +273,28 @@ def getReservations():
     else:
         code = 404 
     return jsonify(lista), code
-    
+
+@app.route("/enviarLinkCheckin")
+def sendLinkCheckin():
+    tomorrow = dt.today().date() + timedelta(days=1)
+    print(tomorrow)
+    reservationsForTomorrow = DB.getReservation_mail(tomorrow)
+    print(reservationsForTomorrow)
+    urlFront = os.getenv("URL_FRONT")
+    messages = {}
+    for reservation in reservationsForTomorrow:
+        link = f"{urlFront}/checkin/{reservation[0]}"
+        messages[reservation[1]] = sendMail(app,reservation[1],"Chek-in",[],render_template("/mails/checkin.html", link=link))[0]["message"]
+    return jsonify(messages), 200
+
+@app.route("/checkin")
+def checkin():
+    id = request.args.get('id')
+    unitTitle = DB.getUnitForReservationById(id)
+    if unitTitle:
+        DB.setCheckedIn(id)
+        return jsonify({"message":"Check-in realizado con éxito","unit":unitTitle[0]}), 200
+    return jsonify({"message":"Reserva no encontrada"}),400
 
 if __name__ == "__main__":
      app.run(debug=True, host="localhost", port=5001)
