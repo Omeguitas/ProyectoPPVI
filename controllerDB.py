@@ -310,5 +310,36 @@ class ControllerDB:
                 dicc_list_future.append(dicc)
         return {"current":dicc_list_current, "future": dicc_list_future}
 
-    # url primera foto, title de tabla unit
-    # 
+    def getReservation_mail(self, date:datetime):
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        query = """SELECT r.id, g.email, g.name
+            FROM reservation r
+            JOIN guest g
+            ON r.guest_id = g.id
+            WHERE r.check_in_date BETWEEN %s AND %s"""
+        cursor.execute(query,(date,date))
+        data = cursor.fetchall()
+        conn.close()
+        return data
+    
+    def getUnitForReservationById(self, id:int):
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        query = """SELECT u.title
+            FROM unit u
+            JOIN reservation r
+            ON r.unit_id = u.id
+            WHERE r.id = %s"""
+        cursor.execute(query,(id))
+        unit_title = cursor.fetchone()
+        conn.close()
+        return unit_title
+    
+    def setCheckedIn(self, id:int):
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        query = """UPDATE reservation SET checked_in = 1 WHERE id = %s"""
+        cursor.execute(query,(id))
+        conn.commit()
+        conn.close()
