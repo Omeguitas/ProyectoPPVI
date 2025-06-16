@@ -276,7 +276,7 @@ def getReservations():
 
 @app.route("/enviarLinkCheckin")
 def sendLinkCheckin():
-    tomorrow = dt.today().date() + timedelta(days=1)
+    tomorrow = dt.today().date()-timedelta(hours=3) + timedelta(days=1)
     print(tomorrow)
     reservationsForTomorrow = DB.getReservation_mail(tomorrow)
     print(reservationsForTomorrow)
