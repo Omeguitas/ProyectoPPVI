@@ -25,7 +25,7 @@ class ControllerDB:
             if (check_in_date and check_out_date):
                 query += """ u.id NOT IN
                 (SELECT r.unit_id FROM reservation r WHERE
-                r.check_out_date > %s AND r.check_in_date < %s )"""
+                r.check_out_date > %s AND r.check_in_date < %s AND NOT r.canceled )"""
                 params = [check_in_date, check_out_date]
             
             amenities = criteria.pop("amenities",False)
@@ -169,6 +169,7 @@ class ControllerDB:
             DATE_FORMAT(check_in_date, '%Y-%m') AS mes,
             SUM(price) AS ingresos
             FROM reservation
+            WHERE NOT canceled
             GROUP BY mes
             ORDER BY mes;
             """)
@@ -179,7 +180,7 @@ class ControllerDB:
     def getReservations(self, since = datetime.min, until=datetime.max):
         conn = self.mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM reservation  WHERE check_in_date BETWEEN %s AND %s ORDER BY check_in_date",(since,until))
+        cursor.execute("SELECT * FROM reservation  WHERE NOT canceled AND check_in_date BETWEEN %s AND %s ORDER BY check_in_date",(since,until))
         data = cursor.fetchall()
         conn.close()
         return data
@@ -227,6 +228,18 @@ class ControllerDB:
             conn.close()
             return {"message":"Reserva exitosa"}
         return {"message":"La unidad ya se encuentra reservada en esas fechas"}
+    
+
+    def cancelReservation(self,id:int):
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        query = "UPDATE reservation SET canceled = 1 WHERE id = %s"
+        modificated = cursor.execute(query,(id))
+        conn.commit()
+        if modificated:
+            return {"message":"Reserva cancelada"},201
+        return {"message":"Reserva no encontrada"},400
+
         
 
 
@@ -291,6 +304,7 @@ class ControllerDB:
         JOIN unit u ON r.unit_id = u.id
         JOIN guest g ON r.guest_id = g.id
         WHERE r.check_out_date >= %s
+        AND NOT r.canceled
         ORDER BY Ingreso"""
         data = datetime.today().date()
         cursor.execute(query,(data))
@@ -330,7 +344,8 @@ class ControllerDB:
             FROM unit u
             JOIN reservation r
             ON r.unit_id = u.id
-            WHERE r.id = %s"""
+            WHERE r.id = %s
+            AND NOT r.canceled"""
         cursor.execute(query,(id))
         unit_title = cursor.fetchone()
         conn.close()

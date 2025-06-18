@@ -274,6 +274,15 @@ def getReservations():
         code = 404 
     return jsonify(lista), code
 
+@app.route("/cancelarReserva")
+@jwt_required()
+def cancelReservation():
+    id = request.args.get("id")
+    if id:
+        response, code = DB.cancelReservation(id)
+        return jsonify(response),code
+    return jsonify({"message":"Id de reserva faltante"}), 404 
+
 @app.route("/enviarLinkCheckin")
 def sendLinkCheckin():
     tomorrow = (dt.today()-timedelta(hours=3)).date() + timedelta(days=1)
