@@ -293,7 +293,7 @@ def sendLinkCheckin():
     messages = {}
     for reservation in reservationsForTomorrow:
         link = f"{urlFront}/checkin/{reservation[0]}"
-        messages[reservation[1]] = sendMail(app,reservation[1],"Chek-in",[],render_template("/mails/checkin.html", link=link))[0]["message"]
+        messages[reservation[1]] = sendMail(app,reservation[1],"Check-in",[],render_template("/mails/checkin.html", link=link))[0]["message"]
     return jsonify(messages), 200
 
 @app.route("/checkin")
