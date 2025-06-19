@@ -299,7 +299,8 @@ class ControllerDB:
         u.urls_fotos as Foto,
         u.title as Unidad,
         g.name,
-        g.email
+        g.email,
+        r.id
         FROM reservation r
         JOIN unit u ON r.unit_id = u.id
         JOIN guest g ON r.guest_id = g.id

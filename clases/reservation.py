@@ -6,10 +6,11 @@ class Reservation:
         self.guest_id = guest_id
         self.check_in_date = check_in_date
         self.check_out_date = check_out_date
-        self.price = price
+        self.unit_price = price
         self.amount_paid = amount_paid
         self.id = id
         self.DB = DB
+        self.price = (check_out_date-check_in_date).days * self.unit_price
 
     def save(self):
         return self.DB.createReservation(self)

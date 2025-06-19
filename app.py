@@ -281,7 +281,7 @@ def cancelReservation():
     if id:
         response, code = DB.cancelReservation(id)
         return jsonify(response),code
-    return jsonify({"message":"Id de reserva faltante"}), 404 
+    return jsonify({"message":"Id de reserva faltante"}), 400
 
 @app.route("/enviarLinkCheckin")
 def sendLinkCheckin():
