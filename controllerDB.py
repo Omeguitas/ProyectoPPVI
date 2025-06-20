@@ -396,7 +396,7 @@ class ControllerDB:
             conn.close()
             return {"message":"Encuesta cargada"},201
         except Exception as e:
-            return {"message":f"Encuesta cargada previamente {e}"},403
+            return {"message":f"Error: {e}"},403
         
 
     def updateSuperAdmin(self, request):
