@@ -390,12 +390,13 @@ class ControllerDB:
         query = "INSERT INTO survey (reservation_id, question1, question2, question3, question4 ,question5) VALUES(%s,%s,%s,%s,%s,%s)"
         conn = self.mysql.connect()
         cursor = conn.cursor()
-        insert = cursor.execute(query,data)
-        conn.commit()
-        conn.close()
-        if insert:
+        try:
+            insert = cursor.execute(query,data)
+            conn.commit()
+            conn.close()
             return {"message":"Encuesta cargada"},201
-        return {"message":"Encuesta cargada previamente"},403
+        except Exception as e:
+            return {"message":f"Encuesta cargada previamente {e}"},403
         
 
     def updateSuperAdmin(self, request):
