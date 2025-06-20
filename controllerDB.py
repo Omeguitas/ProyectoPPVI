@@ -378,15 +378,14 @@ class ControllerDB:
         conn.close()
 
     def uploadSurvey(self, request):
-        dicc = request.json()
+        dicc = request.get_json()
         id = dicc.get("id")
         p1 = dicc.get("p1")
         p2 = dicc.get("p2")
         p3 = dicc.get("p3")
         p4 = dicc.get("p4")
         p5 = dicc.get("p5")
-        p6 = dicc.get("p6")
-        data = (id,p1,p2,p3,p4,p5,p6)
+        data = (id,p1,p2,p3,p4,p5)
         query = "INSERT INTO survey (reservation_id, question1, question2, question3, question4 ,question5) VALUES(%s,%s,%s,%s,%s,%s)"
         conn = self.mysql.connect()
         cursor = conn.cursor()
