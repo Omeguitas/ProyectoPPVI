@@ -1,0 +1,12 @@
+{% extends "mails/base.html" %}
+
+{% block document %} Recuperación de contraseña {% endblock %}
+
+{% block title %}
+Encuesta de satisfacción
+{% endblock %}
+
+{% block body %}
+<p>Estimado/a {{name}}, por favor, siga el siguiente enlace para realizar una encuesta de satisfacción</p>
+<a href="{{link}}">Click aquí</a>
+{% endblock %}

@@ -300,32 +300,42 @@ class ControllerDB:
         u.title as Unidad,
         g.name,
         g.email,
-        r.id
+        r.id,
+        r.canceled
         FROM reservation r
         JOIN unit u ON r.unit_id = u.id
         JOIN guest g ON r.guest_id = g.id
-        WHERE r.check_out_date >= %s
-        AND NOT r.canceled
         ORDER BY Ingreso"""
-        data = datetime.today().date()
-        cursor.execute(query,(data))
+        today = datetime.today().date()
+        cursor.execute(query)
         reservations = cursor.fetchall()
         conn.close()
         columns_name = [description[0] for description in cursor.description]
         dicc_list_current = []
         dicc_list_future = []
+        dicc_list_canceled = []
+        dicc_list_past = []
         for reservation in reservations:
             dicc = dict(zip(columns_name,reservation))
             dicc["Foto"] = dicc["Foto"].split(",")[0]
+            # print(dicc)
+            if dicc["canceled"]:
+                dicc_list_canceled.append(dicc)
+            elif dicc["Salida"] >= today:
+                print(dicc["Ingreso"],"****")
+                if dicc["Ingreso"] <= today:
+                    dicc_list_current.append(dicc)
+                else:
+                    dicc_list_future.append(dicc)
+            else:
+                dicc_list_past.append(dicc)
             dicc["Ingreso"] = datetime.strftime(dicc["Ingreso"],"%Y-%m-%d")
             dicc["Salida"] = datetime.strftime(dicc["Salida"],"%Y-%m-%d")
-            if reservation[0] <= data:
-                dicc_list_current.append(dicc)
-            else:
-                dicc_list_future.append(dicc)
-        return {"current":dicc_list_current, "future": dicc_list_future}
 
-    def getReservation_mail(self, date:datetime):
+        return {"current":dicc_list_current, "future": dicc_list_future, "past": dicc_list_past, "canceled": dicc_list_canceled}
+
+    def getReservation_mail(self, tomorrow:datetime, yesterday:datetime):
+        data = []
         conn = self.mysql.connect()
         cursor = conn.cursor()
         query = """SELECT r.id, g.email, g.name
@@ -333,8 +343,15 @@ class ControllerDB:
             JOIN guest g
             ON r.guest_id = g.id
             WHERE r.check_in_date BETWEEN %s AND %s"""
-        cursor.execute(query,(date,date))
-        data = cursor.fetchall()
+        cursor.execute(query,(tomorrow,tomorrow))
+        data.append(cursor.fetchall())
+        query = """SELECT r.id, g.email, g.name
+            FROM reservation r
+            JOIN guest g
+            ON r.guest_id = g.id
+            WHERE r.check_out_date BETWEEN %s AND %s"""
+        cursor.execute(query,(yesterday,yesterday))
+        data.append(cursor.fetchall())
         conn.close()
         return data
     
@@ -359,3 +376,33 @@ class ControllerDB:
         cursor.execute(query,(id))
         conn.commit()
         conn.close()
+
+    def uploadSurvey(self, request):
+        dicc = request.json()
+        id = dicc.get("id")
+        p1 = dicc.get("p1")
+        p2 = dicc.get("p2")
+        p3 = dicc.get("p3")
+        p4 = dicc.get("p4")
+        p5 = dicc.get("p5")
+        p6 = dicc.get("p6")
+        data = (id,p1,p2,p3,p4,p5,p6)
+        query = "INSERT INTO survey (reservation_id, question1, question2, question3, question4 ,question5) VALUES(%s,%s,%s,%s,%s,%s)"
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(query,data)
+        conn.commit()
+        conn.close()
+
+    def updateSuperAdmin(self, request):
+        admins = request.get_json()
+        query = "UPDATE admin SET superUser = %s WHERE id = %s"
+        conn = self.mysql.connect()
+        cursor = conn.cursor()
+        a = {"2":"2"}
+        for admin in admins:
+            data = list(admin.values())[0], list(admin.keys())[0]
+            cursor.execute(query,data)
+        conn.commit()
+        conn.close()
+        return {"message":"Valores modificados con éxito"}

@@ -134,6 +134,10 @@ def editPass():
         return jsonify({"message":"Contraseña modificada con éxito"}), 200
     return jsonify({"message":"Administrador no encontrado"}), 404
 
+@app.route("/editAdmin", methods= ["POST"])
+def editSuperUser():
+    return jsonify(DB.updateSuperAdmin(request))
+
 @app.route("/recoveryPass", methods = ['GET','POST'])
 def recoveryPass():
     serializer = URLSafeTimedSerializer(os.getenv('SECRET_KEY'))
@@ -286,15 +290,18 @@ def cancelReservation():
 @app.route("/enviarLinkCheckin")
 def sendLinkCheckin():
     tomorrow = (dt.today()-timedelta(hours=3)).date() + timedelta(days=1)
-    print(tomorrow)
-    reservationsForTomorrow = DB.getReservation_mail(tomorrow)
-    print(reservationsForTomorrow)
+    yesterday = (dt.today()-timedelta(hours=3)).date() - timedelta(days=1)
+    reservationsForTomorrow, reservationsFinishedYesterday = DB.getReservation_mail(tomorrow,yesterday)    
     urlFront = os.getenv("URL_FRONT")
     messages = {}
+    messages2 = {}
     for reservation in reservationsForTomorrow:
         link = f"{urlFront}/checkin/{reservation[0]}"
         messages[reservation[1]] = sendMail(app,reservation[1],"Check-in",[],render_template("/mails/checkin.html", link=link))[0]["message"]
-    return jsonify(messages), 200
+    for reservaton in reservationsFinishedYesterday:
+        link = f"{urlFront}/encuesta/{reservation[0]}"
+        messages2[reservation[1]] = sendMail(app,reservation[1],"Encuesta",[],render_template("/mails/linkEncuesta.html", link=link))[0]["message"]
+    return jsonify(messages),jsonify(messages2), 200
 
 @app.route("/checkin")
 def checkin():
@@ -305,5 +312,13 @@ def checkin():
         return jsonify({"message":"Check-in realizado con éxito","unit":unitTitle[0]}), 200
     return jsonify({"message":"Reserva no encontrada"}),400
 
+@app.route("/encuesta")
+def encuesta():
+    result = DB.uploadSurvey(request)
+
+
+
+
 if __name__ == "__main__":
      app.run(debug=True, host="localhost", port=5001)
+
