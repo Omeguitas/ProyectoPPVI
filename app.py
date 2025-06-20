@@ -312,9 +312,10 @@ def checkin():
         return jsonify({"message":"Check-in realizado con éxito","unit":unitTitle[0]}), 200
     return jsonify({"message":"Reserva no encontrada"}),400
 
-@app.route("/encuesta")
+@app.route("/encuesta", methods = ["POST"])
 def encuesta():
-    result = DB.uploadSurvey(request)
+    result,code = DB.uploadSurvey(request)
+    return jsonify(result), code
 
 
 

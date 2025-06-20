@@ -61,10 +61,8 @@ def sendReports(app, recipient,DB,html):
 
 def generateIncomeReports(DB):
     incomeData = DB.getIncomeData()
-    # months = [data[0] for data in incomeData]
-    # income = [data[1] for data in incomeData]
-    months = ["1-24","2-24","3-24","4-24","5-24","6-24","7-24","8-24","9-24","10-24","11-24","12-24"]
-    income = [40000,150000,100000,35000,50000,225000,200000,100000,300000,400000,50000,20000]
+    months = [data[0] for data in incomeData]
+    income = [data[1] for data in incomeData]
     
 
     plt.figure(figsize=(8, 6))
