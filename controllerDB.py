@@ -379,6 +379,7 @@ class ControllerDB:
 
     def uploadSurvey(self, request):
         dicc = request.get_json()
+        print(dicc, "^^^^^^^^^^^^^^^^ÑÑÑÑÑÑÑÑÑ")
         id = dicc.get("id")
         p1 = dicc.get("p1")
         p2 = dicc.get("p2")
