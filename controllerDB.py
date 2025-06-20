@@ -313,14 +313,14 @@ class ControllerDB:
         columns_name = [description[0] for description in cursor.description]
         dicc_list_current = []
         dicc_list_future = []
-        dicc_list_canceled = []
+        dicc_list_cancelled = []
         dicc_list_past = []
         for reservation in reservations:
             dicc = dict(zip(columns_name,reservation))
             dicc["Foto"] = dicc["Foto"].split(",")[0]
             # print(dicc)
             if dicc["canceled"]:
-                dicc_list_canceled.append(dicc)
+                dicc_list_cancelled.append(dicc)
             elif dicc["Salida"] >= today:
                 print(dicc["Ingreso"],"****")
                 if dicc["Ingreso"] <= today:
@@ -332,7 +332,7 @@ class ControllerDB:
             dicc["Ingreso"] = datetime.strftime(dicc["Ingreso"],"%Y-%m-%d")
             dicc["Salida"] = datetime.strftime(dicc["Salida"],"%Y-%m-%d")
 
-        return {"current":dicc_list_current, "future": dicc_list_future, "past": dicc_list_past, "canceled": dicc_list_canceled}
+        return {"current":dicc_list_current, "future": dicc_list_future, "past": dicc_list_past, "cancelled": dicc_list_cancelled}
 
     def getReservation_mail(self, tomorrow:datetime, yesterday:datetime):
         data = []
