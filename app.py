@@ -169,8 +169,8 @@ def recoveryPass():
 def createUnit():
     data = request.get_json()
     unit = Unit(data.get("rooms", False), data.get("beds", False), data.get("description", False), data.get("price", False), data.get("amenities", False), data.get("urls_fotos", False), DB, data.get("title", ""),data.get("bathrooms", 0),data.get("address", ""))
-    result = unit.save()
-    return jsonify(result), 201
+    result, code = unit.save()
+    return jsonify(result), code
     # TODO respuesta en caso de fallo
 
 @app.route("/editarUnidad", methods = ['POST'])
@@ -178,8 +178,8 @@ def createUnit():
 def editUnit():
     data = request.get_json()
     unit = Unit(data.get("rooms", False), data.get("beds", False), data.get("description", False), data.get("price", False), data.get("amenities", False), data.get("urls_fotos", False), DB, data.get("title", ""),data.get("bathrooms", 0),data.get("address", ""), data.get("id"))
-    result = unit.edit()
-    return jsonify(result), 200
+    result, code = unit.edit()
+    return jsonify(result), code
     # TODO respuesta en caso de fallo
 
 

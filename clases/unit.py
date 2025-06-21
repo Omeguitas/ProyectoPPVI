@@ -14,14 +14,14 @@ class Unit:
         self.address = address
 
     def save(self):
-        if not(self.rooms and self.beds and self.price):
-            return '{"msg":"datos incompletos"}'
+        if not(self.rooms and self.beds and self.price and self.title and self.bathrooms and self.address):
+            return {"msg":"datos incompletos"}, 400
         else:
             return self.DB.createUnit(self)
         
     def edit(self):
-        if not(self.rooms and self.beds and self.price):
-            return '{"msg":"datos incompletos"}'
+        if not(self.rooms and self.beds and self.price and self.title and self.bathrooms and self.address):
+            return {"msg":"datos incompletos"}, 400
         else:
             return self.DB.modifyUnit(self)
         

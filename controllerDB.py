@@ -61,7 +61,7 @@ class ControllerDB:
         cursor.execute(query,data)
         conn.commit()
         conn.close()
-        return '{"msg":"Unidad creada con exito"}'
+        return {"msg":"Unidad creada con exito"}, 201
     
 
     def modifyUnit(self, unit):
@@ -83,9 +83,9 @@ class ControllerDB:
         conn.commit()
         message = ""
         if cursor.rowcount:
-            message = "{'message':'Unidad modificada con exito'}"
+            message = {'message':'Unidad modificada con exito'}, 206
         else:
-            message = "{'message':'Unidad no encontrada'}"
+            message = {'message':'Unidad no encontrada'}, 400
         cursor.close()
         conn.close()
         return message
