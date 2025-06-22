@@ -14,11 +14,10 @@ from clases.unit import Unit
 from clases import reports
 from clases.guest import Guest
 from clases.reservation import Reservation
-from clases.reports import sendMail
+from clases.sendMail import sendMail
 
 
 load_dotenv()
-folder = os.path.join('fotos') # Referencia a la carpeta
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
@@ -31,9 +30,9 @@ app.config['MYSQL_DATABASE_DB']= os.getenv("DB_NAME") # Nombre DB
 app.config['JWT_SECRET_KEY']= os.getenv("JWT_SECRET_KEY") # Clave para JWT
 
 app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
-app.config['MAIL_PORT'] = 465  # o 587
-app.config['MAIL_USE_TLS'] = False # Cambiar a True si usas el puerto 587
-app.config['MAIL_USE_SSL'] = True # Usar SSL en el puerto 465
+app.config['MAIL_PORT'] = 465  
+app.config['MAIL_USE_TLS'] = False 
+app.config['MAIL_USE_SSL'] = True 
 app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER')
@@ -59,15 +58,15 @@ def index():
 def login():
     data = request.get_json()  # Obtiene el JSON de la solicitud
 
-    # Verifica que se haya enviado el JSON
+    # Verificación que se haya enviado el JSON
     if not data:
         return jsonify({"error": "No se proporcionó JSON"}), 400
 
-    # Obtiene el nombre de usuario y la contraseña
-    username = data.get("username", None)  # Usa .get() para evitar KeyError
+    
+    username = data.get("username", None)
     password = data.get("password", None)
 
-    # Verifica que se hayan proporcionado ambos campos
+    # Verificación que se hayan proporcionado ambos campos
     if not username or not password:
         return jsonify({"error": "Faltan username o password"}), 400
     
@@ -90,7 +89,7 @@ def crearAdmin():
         data = request.get_json()
         if not data:
             return jsonify({"error": "No se proporcionó JSON"}), 400
-        username = data.get("username", None)  # Usa .get() para evitar KeyError
+        username = data.get("username", None)
         password = data.get("password", None)
         superUser = data.get("superUser", False)
         if not username or not password:
@@ -149,7 +148,7 @@ def recoveryPass():
             token = serializer.dumps(username, salt)
             urlFront = os.getenv("URL_FRONT")
             resetLink = f"{urlFront}/recoveryPass?token={token}"
-            response, code = reports.sendMail(app,username,"Siga el siguiente link para reestablecer su contraseña",[],render_template("/mails/recoveryPass.html", link=resetLink))
+            response, code = sendMail(app,username,"Siga el siguiente link para reestablecer su contraseña",[],render_template("/mails/recoveryPass.html", link=resetLink))
             return jsonify(response), code
         return jsonify({"message":"Si el usuario existe, se enviará un correo electrónico con el link de recuperación."}), 200
     elif request.method == 'POST':
@@ -171,7 +170,6 @@ def createUnit():
     unit = Unit(data.get("rooms", False), data.get("beds", False), data.get("description", False), data.get("price", False), data.get("amenities", False), data.get("urls_fotos", False), DB, data.get("title", ""),data.get("bathrooms", 0),data.get("address", ""))
     result, code = unit.save()
     return jsonify(result), code
-    # TODO respuesta en caso de fallo
 
 @app.route("/editarUnidad", methods = ['POST'])
 @jwt_required()
@@ -180,7 +178,6 @@ def editUnit():
     unit = Unit(data.get("rooms", False), data.get("beds", False), data.get("description", False), data.get("price", False), data.get("amenities", False), data.get("urls_fotos", False), DB, data.get("title", ""),data.get("bathrooms", 0),data.get("address", ""), data.get("id"))
     result, code = unit.edit()
     return jsonify(result), code
-    # TODO respuesta en caso de fallo
 
 
 @app.route("/eliminarUnidad", methods = ['POST'])
@@ -228,10 +225,7 @@ def units():
 def generateReports():
     message = {}
     recipient = json.loads(get_jwt_identity()).get("username")
-    # recipient = "guillermo.fullstack@gmail.com"
     message, code = reports.sendReports(app, recipient, DB, render_template("/mails/informes.html"))
-    # for recipient in ["guillermo.fullstack@gmail.com","carol.ceron801@gmail.com","germangp62@gmail.com","msoledadm88@gmail.com"]:
-    #     message[recipient] = reports.sendReports(app, mail,recipient,DB)
     return jsonify(message), code
 
 
@@ -261,7 +255,7 @@ def datos_multiplicador():
     if request.method == "POST":
         data = request.get_json()
         count = DB.setSeasonRates(data)
-        return jsonify({"message": "Se han creado {count} periodos correctamente."}), 201
+        return jsonify({"message": f"Se han creado {count} periodos correctamente."}), 201
     lista = DB.getSeasonRates()
     if lista:
         code = 200
@@ -289,6 +283,7 @@ def cancelReservation():
 
 @app.route("/enviarLinkCheckin")
 def sendLinkCheckin():
+    # para tomorrow y yesterday se descuentan 3 horas para corregir desfazaje por zona horaria
     tomorrow = (dt.today()-timedelta(hours=3)).date() + timedelta(days=1)
     yesterday = (dt.today()-timedelta(hours=3)).date() - timedelta(days=1)
     reservationsForTomorrow, reservationsFinishedYesterday = DB.getReservation_mail(tomorrow,yesterday)    
@@ -297,8 +292,10 @@ def sendLinkCheckin():
     messages2 = {}
     for reservation in reservationsForTomorrow:
         link = f"{urlFront}/checkin/{reservation[0]}"
+        # se envian mails de check-in
         messages[reservation[1]] = sendMail(app,reservation[1],"Check-in",[],render_template("/mails/checkin.html", link=link))[0]["message"]
     for reservaton in reservationsFinishedYesterday:
+        # se envian mails de encuesta
         link = f"{urlFront}/encuesta/{reservation[0]}"
         messages2[reservation[1]] = sendMail(app,reservation[1],"Encuesta",[],render_template("/mails/linkEncuesta.html", link=link))[0]["message"]
     return jsonify(messages),jsonify(messages2), 200

@@ -4,10 +4,6 @@ from werkzeug.security import generate_password_hash as hashear, check_password_
 import json
 from datetime import timedelta as td
 
-# import clases.admin
-
-
-
 
 class ControllerDB:
     def __init__(self, mysql: MySQL):
@@ -37,12 +33,13 @@ class ControllerDB:
                     params.append(amenitie)
 
             if not(amenities or check_in_date and check_out_date):
-                query += " 1=1" # Condición que no modifica el resultado, pero simplifica el armado de la query
+                query += " 1=1" 
             for key, value in criteria.items():
                 query += f" AND u.{key} = " + "%s"
                 params.append(value)
         cursor.execute(query, params)
         units = cursor.fetchall()
+        cursor.close()
         conn.close()
         columns_name = [description[0] for description in cursor.description]
 
@@ -60,8 +57,9 @@ class ControllerDB:
         data = unit.rooms, unit.beds, unit.description, unit.price, json.dumps(unit.amenities),unit.urls_fotos,unit.title,unit.bathrooms,unit.address
         cursor.execute(query,data)
         conn.commit()
+        cursor.close()
         conn.close()
-        return {"msg":"Unidad creada con exito"}, 201
+        return {"message":"Unidad creada con exito"}, 201
     
 
     def modifyUnit(self, unit):
@@ -103,6 +101,7 @@ class ControllerDB:
         else:
             message = {'message':'Unidad no encontrada'}, 404
         cursor.close()
+        cursor.close()
         conn.close()
         return message
 
@@ -112,6 +111,7 @@ class ControllerDB:
         query = """SELECT superUser, password FROM admin WHERE username LIKE %s"""
         cursor.execute(query,(admin.username))
         result = cursor.fetchone()
+        cursor.close()
         conn.close()
         return result
     
@@ -131,7 +131,8 @@ class ControllerDB:
             data = (admin.username,hashear(admin.password),admin.superUser=="True")
             cursor.execute(query,data)
             conn.commit()
-            conn.close()
+            cursor.close()
+        conn.close()
             return f"{admin.username} registrado exitosamente"
         except:
             return "Administrador ya registrado"
@@ -142,6 +143,7 @@ class ControllerDB:
         query = "DELETE FROM admin WHERE id = %s"
         deleted = cursor.execute(query,(id)) > 0
         conn.commit()
+        cursor.close()
         conn.close()
         return deleted
     
@@ -151,6 +153,7 @@ class ControllerDB:
         query = "UPDATE admin SET password = %s WHERE username = %s"
         modified = cursor.execute(query,(hashear(password),username)) > 0
         conn.commit()
+        cursor.close()
         conn.close()
         return modified
 
@@ -174,6 +177,7 @@ class ControllerDB:
             ORDER BY mes;
             """)
         data = cursor.fetchall()
+        cursor.close()
         conn.close()
         return data
     
@@ -182,6 +186,7 @@ class ControllerDB:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM reservation  WHERE NOT canceled AND check_in_date BETWEEN %s AND %s ORDER BY check_in_date",(since,until))
         data = cursor.fetchall()
+        cursor.close()
         conn.close()
         return data
     
@@ -190,6 +195,7 @@ class ControllerDB:
         cursor = conn.cursor()
         cursor.execute("SELECT COUNT(id) FROM unit")
         numberOfUnits = cursor.fetchone()
+        cursor.close()
         conn.close()
         return numberOfUnits
 
@@ -198,6 +204,7 @@ class ControllerDB:
         cursor = conn.cursor()
         cursor.execute("SELECT id FROM guest WHERE email = %s", guest.email)
         idGuest = cursor.fetchone()
+        cursor.close()
         conn.close()
         return idGuest
     
@@ -214,7 +221,8 @@ class ControllerDB:
             cursor.execute(query, data)
             conn.commit()
             id = cursor.lastrowid
-            conn.close()
+            cursor.close()
+        conn.close()
         return id
     
     def createReservation(self, reservation):
@@ -225,7 +233,8 @@ class ControllerDB:
             data = (reservation.unit_id, reservation.guest_id, reservation.check_in_date, reservation.check_out_date, reservation.price, reservation.amount_paid)
             cursor.execute(query,data)
             conn.commit()
-            conn.close()
+            cursor.close()
+        conn.close()
             return {"message":"Reserva exitosa"}
         return {"message":"La unidad ya se encuentra reservada en esas fechas"}
     
@@ -259,6 +268,7 @@ class ControllerDB:
             fechas.append(actual)
         cursor.execute(query,fechas)
         result = cursor.fetchall()
+        cursor.close()
         conn.close()
         columns_name = [description[0] for description in cursor.description]
         dicc_list = []
@@ -283,6 +293,7 @@ class ControllerDB:
             values = (datetime.strptime(element[0],"%Y-%m-%d"),datetime.strptime(element[1],"%Y-%m-%d"),float(element[2]))
             count += cursor.execute(queryInsert,values)
         conn.commit()
+        cursor.close()
         conn.close()
         return count
 
@@ -309,6 +320,7 @@ class ControllerDB:
         today = datetime.today().date()
         cursor.execute(query)
         reservations = cursor.fetchall()
+        cursor.close()
         conn.close()
         columns_name = [description[0] for description in cursor.description]
         dicc_list_current = []
@@ -352,6 +364,7 @@ class ControllerDB:
             WHERE r.check_out_date BETWEEN %s AND %s"""
         cursor.execute(query,(yesterday,yesterday))
         data.append(cursor.fetchall())
+        cursor.close()
         conn.close()
         return data
     
@@ -366,6 +379,7 @@ class ControllerDB:
             AND NOT r.canceled"""
         cursor.execute(query,(id))
         unit_title = cursor.fetchone()
+        cursor.close()
         conn.close()
         return unit_title
     
@@ -375,6 +389,7 @@ class ControllerDB:
         query = """UPDATE reservation SET checked_in = 1 WHERE id = %s"""
         cursor.execute(query,(id))
         conn.commit()
+        cursor.close()
         conn.close()
 
     def uploadSurvey(self, request):
@@ -393,7 +408,8 @@ class ControllerDB:
         try:
             insert = cursor.execute(query,data)
             conn.commit()
-            conn.close()
+            cursor.close()
+        conn.close()
             return {"message":"Encuesta cargada"},201
         except Exception as e:
             return {"message":f"Error: {e}"},403
@@ -409,5 +425,6 @@ class ControllerDB:
             data = list(admin.values())[0], list(admin.keys())[0]
             cursor.execute(query,data)
         conn.commit()
+        cursor.close()
         conn.close()
         return {"message":"Valores modificados con éxito"}
