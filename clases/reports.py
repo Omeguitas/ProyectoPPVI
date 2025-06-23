@@ -39,7 +39,7 @@ def generateIncomeReports(DB):
     plt.tight_layout()
 
     for month, amount in zip(months, income):
-        plt.text(month, amount / 2, str(amount), ha='center', va='center', color='white', rotation=90) #agrego el monto
+        plt.text(month, amount / 2, str(amount), ha='center', va='center', color='white', rotation=90) # agrego el monto
 
     # Guardar el gráfico en un buffer de memoria
     buffer = io.BytesIO()
@@ -67,7 +67,7 @@ def generateOcupationReport(DB):
         plt.ylim(0,100)
 
         for period, ocupation in zip(subGroupPeriods, subGroupOcupations):
-            plt.text(period, ocupation / 2, f'{ocupation}%', ha='center', va='center', color='white', rotation=90) #agrego el monto
+            plt.text(period, ocupation / 2, f'{ocupation}%', ha='center', va='center', color='white', rotation=90) # agrego el valor
 
         # Guardar el gráfico en un buffer de memoria
         buffer = io.BytesIO()

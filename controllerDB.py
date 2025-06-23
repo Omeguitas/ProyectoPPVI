@@ -101,7 +101,6 @@ class ControllerDB:
         else:
             message = {'message':'Unidad no encontrada'}, 404
         cursor.close()
-        cursor.close()
         conn.close()
         return message
 
@@ -132,7 +131,7 @@ class ControllerDB:
             cursor.execute(query,data)
             conn.commit()
             cursor.close()
-        conn.close()
+            conn.close()
             return f"{admin.username} registrado exitosamente"
         except:
             return "Administrador ya registrado"
@@ -221,7 +220,7 @@ class ControllerDB:
             cursor.execute(query, data)
             conn.commit()
             id = cursor.lastrowid
-            cursor.close()
+        cursor.close()
         conn.close()
         return id
     
@@ -234,7 +233,7 @@ class ControllerDB:
             cursor.execute(query,data)
             conn.commit()
             cursor.close()
-        conn.close()
+            conn.close()
             return {"message":"Reserva exitosa"}
         return {"message":"La unidad ya se encuentra reservada en esas fechas"}
     
@@ -330,11 +329,9 @@ class ControllerDB:
         for reservation in reservations:
             dicc = dict(zip(columns_name,reservation))
             dicc["Foto"] = dicc["Foto"].split(",")[0]
-            # print(dicc)
             if dicc["canceled"]:
                 dicc_list_cancelled.append(dicc)
             elif dicc["Salida"] >= today:
-                print(dicc["Ingreso"],"****")
                 if dicc["Ingreso"] <= today:
                     dicc_list_current.append(dicc)
                 else:
@@ -394,7 +391,6 @@ class ControllerDB:
 
     def uploadSurvey(self, request):
         dicc = request.get_json()
-        print(dicc, "^^^^^^^^^^^^^^^^ÑÑÑÑÑÑÑÑÑ")
         id = dicc.get("id")
         p1 = dicc.get("p1")
         p2 = dicc.get("p2")
@@ -409,9 +405,11 @@ class ControllerDB:
             insert = cursor.execute(query,data)
             conn.commit()
             cursor.close()
-        conn.close()
+            conn.close()
             return {"message":"Encuesta cargada"},201
         except Exception as e:
+            cursor.close()
+            conn.close()
             return {"message":f"Error: {e}"},403
         
 
@@ -420,7 +418,6 @@ class ControllerDB:
         query = "UPDATE admin SET superUser = %s WHERE id = %s"
         conn = self.mysql.connect()
         cursor = conn.cursor()
-        a = {"2":"2"}
         for admin in admins:
             data = list(admin.values())[0], list(admin.keys())[0]
             cursor.execute(query,data)

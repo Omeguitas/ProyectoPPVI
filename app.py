@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify, render_template
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
 from flaskext.mysql import MySQL
-from flask_mail import Mail, Message
+from flask_mail import Mail
 from itsdangerous import URLSafeTimedSerializer 
 from controllerDB import ControllerDB
 from dotenv import load_dotenv

@@ -88,7 +88,7 @@ def obtener_credenciales():
             SCOPES,
         )
         creds = flow.run_local_server(port=8080)
-    # Guarda las credenciales para la próxima ejecución.
+    # Guarda las credenciales en token.json
     with open('token.json', 'w') as token:
         token.write(creds.to_json())
     return creds
