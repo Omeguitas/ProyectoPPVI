@@ -8,7 +8,7 @@ Un sistema completo de gestión de propiedades vacacionales desarrollado con Fla
 - **🏘️ Gestión de Unidades** - Crear, editar, eliminar y buscar propiedades
 - **📅 Sistema de Reservas** con validación de disponibilidad
 - **📊 Reportes Automatizados** con gráficos de ingresos y ocupación
-- **💰 Multiplicadores de Precios** por temporada y ocupación
+- **💰 Multiplicadores de Precios dinámicos** por temporada y ocupación
 - **📧 Notificaciones por Email** para check-in y recuperación de contraseñas
 - **🌐 API Pública** para integración con terceros
 - **📱 CORS habilitado** para frontend
