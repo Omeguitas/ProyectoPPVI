@@ -289,7 +289,6 @@ def sendLinkCheckin():
     reservationsForTomorrow, reservationsFinishedYesterday = DB.getReservation_mail(tomorrow,yesterday)    
     urlFront = os.getenv("URL_FRONT")
     messages = {}
-    messages2 = {}
     for reservation in reservationsForTomorrow:
         link = f"{urlFront}/checkin/{reservation[0]}"
         # se envian mails de check-in
@@ -297,8 +296,8 @@ def sendLinkCheckin():
     for reservaton in reservationsFinishedYesterday:
         # se envian mails de encuesta
         link = f"{urlFront}/encuesta/{reservation[0]}"
-        messages2[reservation[1]] = sendMail(app,reservation[1],"Encuesta",[],render_template("/mails/linkEncuesta.html", link=link))[0]["message"]
-    return jsonify(messages),jsonify(messages2), 200
+        messages[reservation[1]] = sendMail(app,reservation[1],"Encuesta",[],render_template("/mails/linkEncuesta.html", link=link))[0]["message"]
+    return jsonify(messages), 200
 
 @app.route("/checkin")
 def checkin():
