@@ -251,59 +251,6 @@ Eliminar administrador (requiere superUser)
 
 Cambiar contraseña del administrador logueado
 
-## 🚀 Deployment en Render
-
-### 1. Preparar la Aplicación
-
-El proyecto ya incluye:
-
-- `requirements.txt` con todas las dependencias
-- Configuración de Gunicorn en `Procfile`
-
-### 2. Crear Aplicación en Render
-
-1. Ve a [render.com](https://render.com) y crea una cuenta
-2. Haz clic en "New +" y selecciona "Web Service"
-3. Conecta tu repositorio de GitHub
-4. Configura el servicio:
-   - **Name**: `proyectoppvi` (o el nombre que prefieras)
-   - **Environment**: `Python 3`
-   - **Build Command**: `pip install -r requirements.txt`
-   - **Start Command**: `gunicorn app:app`
-
-### 3. Configurar Variables de Entorno
-
-En la sección "Environment Variables" de Render, agrega:
-
-```env
-DB_HOST=tu-host-mysql
-DB_USER=tu-usuario-mysql
-DB_PASSWORD=tu-contraseña-mysql
-DB_PORT=3306
-DB_NAME=tu-base-datos
-JWT_SECRET_KEY=tu-clave-secreta-jwt
-SECRET_KEY=tu-clave-secreta-flask
-MAIL_SERVER=smtp.gmail.com
-MAIL_USERNAME=tu-email@gmail.com
-MAIL_PASSWORD=tu-contraseña-de-aplicacion
-MAIL_DEFAULT_SENDER=tu-email@gmail.com
-URL_FRONT=https://tu-frontend.com
-```
-
-### 4. Desplegar
-
-1. Render detectará automáticamente los cambios en tu repositorio
-2. Cada push a la rama principal activará un nuevo deployment
-3. La aplicación estará disponible en `https://tu-app-name.onrender.com`
-
-### 5. Configuración de Base de Datos
-
-Para producción, se recomienda usar:
-
-- **PlanetScale** (MySQL compatible)
-- **AWS RDS** (MySQL)
-- **Google Cloud SQL** (MySQL)
-
 ## 🧪 Testing
 
 ### Tests con Postman
